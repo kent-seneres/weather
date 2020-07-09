@@ -8,25 +8,25 @@ enum Actions {
   FAIL = 'FAIL',
 }
 
-interface CurrentPositionData {
+interface CurrentLocationData {
   timestamp: Date;
   lat: number;
   lon: number;
 }
 
-interface CurrentPositionState {
+interface CurrentLocationState {
   isLoading: boolean;
   isError: boolean;
-  data: CurrentPositionData | null;
+  data: CurrentLocationData | null;
 }
 
-const initialState: CurrentPositionState = {
+const initialState: CurrentLocationState = {
   isLoading: false,
   isError: false,
   data: null,
 };
 
-const currentPositionReducer: React.Reducer<CurrentPositionState, any> = (
+const currentLocationReducer: React.Reducer<CurrentLocationState, any> = (
   state,
   action,
 ) => {
@@ -55,11 +55,11 @@ const currentPositionReducer: React.Reducer<CurrentPositionState, any> = (
   }
 };
 
-const useCurrentPosition = () => {
+const useCurrentLocation = () => {
   const [permissionGranted, setPermissionGranted] = React.useState(false);
 
   const [state, dispatch] = React.useReducer(
-    currentPositionReducer,
+    currentLocationReducer,
     initialState,
   );
 
@@ -119,9 +119,7 @@ const useCurrentPosition = () => {
     );
   }, [permissionGranted]);
 
-  return {
-    state,
-  };
+  return {currentLocationState: state};
 };
 
-export default useCurrentPosition;
+export default useCurrentLocation;

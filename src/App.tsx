@@ -1,18 +1,25 @@
 import React from 'react';
 import {SafeAreaView, ScrollView, Text, StatusBar} from 'react-native';
-import useCurrentPosition from './hooks/useCurrentPosition';
-import Config from 'react-native-config';
+import useCurrentLocation from './hooks/useCurrentLocation';
+import useWeatherApi from './hooks/useWeatherApi';
 
 const App = () => {
-  const currentPositionState = useCurrentPosition();
+  const {currentLocationState: currentPositionState} = useCurrentLocation();
+  const {weatherApiState, getWeather} = useWeatherApi();
 
   React.useEffect(() => {
-    if (currentPositionState) {
-      console.log(currentPositionState);
+    if (!currentPositionState.data) {
+      return;
     }
 
-    console.log(Config.OWM_APP_ID);
-  }, [currentPositionState]);
+    console.log(currentPositionState.data);
+    getWeather(currentPositionState.data.lat, currentPositionState.data.lon);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPositionState.data]);
+
+  React.useEffect(() => {
+    console.log(weatherApiState.data.current);
+  }, [weatherApiState.data]);
 
   return (
     <>
