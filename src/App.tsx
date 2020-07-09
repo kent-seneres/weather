@@ -1,6 +1,7 @@
 import React from 'react';
 import {SafeAreaView, ScrollView, Text, StatusBar} from 'react-native';
 import useCurrentPosition from './hooks/useCurrentPosition';
+import Config from 'react-native-config';
 
 const App = () => {
   const currentPositionState = useCurrentPosition();
@@ -9,6 +10,8 @@ const App = () => {
     if (currentPositionState) {
       console.log(currentPositionState);
     }
+
+    console.log(Config.OWM_APP_ID);
   }, [currentPositionState]);
 
   return (
