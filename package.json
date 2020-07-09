@@ -11,12 +11,16 @@
   },
   "dependencies": {
     "react": "16.13.1",
-    "react-native": "0.63.0"
+    "react-native": "0.63.0",
+    "react-native-geolocation-service": "^5.0.0",
+    "typescript": "^3.9.6"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
     "@babel/runtime": "^7.10.4",
     "@react-native-community/eslint-config": "^2.0.0",
+    "@types/react": "^16.9.41",
+    "@types/react-native": "^0.62.17",
     "babel-jest": "^26.1.0",
     "eslint": "^7.4.0",
     "jest": "^26.1.0",

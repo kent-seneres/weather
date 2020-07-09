@@ -1,15 +1,16 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React from 'react';
 import {SafeAreaView, ScrollView, Text, StatusBar} from 'react-native';
+import useCurrentPosition from './useCurrentPosition';
 
-const App: () => React$Node = () => {
+const App = () => {
+  const coordinates = useCurrentPosition();
+
+  React.useEffect(() => {
+    if (coordinates) {
+      console.log(coordinates);
+    }
+  }, [coordinates]);
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
