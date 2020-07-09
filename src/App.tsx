@@ -1,15 +1,15 @@
 import React from 'react';
 import {SafeAreaView, ScrollView, Text, StatusBar} from 'react-native';
-import useCurrentPosition from './useCurrentPosition';
+import useCurrentPosition from './hooks/useCurrentPosition';
 
 const App = () => {
-  const coordinates = useCurrentPosition();
+  const currentPositionState = useCurrentPosition();
 
   React.useEffect(() => {
-    if (coordinates) {
-      console.log(coordinates);
+    if (currentPositionState) {
+      console.log(currentPositionState);
     }
-  }, [coordinates]);
+  }, [currentPositionState]);
 
   return (
     <>
