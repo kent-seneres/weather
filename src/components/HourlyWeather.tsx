@@ -123,6 +123,7 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
       <ButtonGroup
         buttons={['Temperature', 'Feels Like', 'Wind Speed']}
         buttonStyle={styles.buttonGroupButton}
+        textStyle={styles.buttonGroupText}
         containerStyle={styles.buttonGroupContainer}
         buttonContainerStyle={styles.buttonGroupContainer}
         selectedIndex={dataChoice}
@@ -199,7 +200,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#f3f0f6',
   },
+  buttonGroupText: {
+    fontSize: 12,
+  },
   buttonGroupContainer: {
+    padding: 2,
     borderColor: '#fff',
   },
   header: {
