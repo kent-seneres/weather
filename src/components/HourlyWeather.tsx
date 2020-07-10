@@ -7,6 +7,7 @@ import getTimeString from '../helpers/getTimeString';
 
 enum DataChoice {
   TEMPERATURE,
+  FEELS_LIKE,
   WIND_SPEED,
 }
 
@@ -32,6 +33,8 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
     switch (dataChoice) {
       case DataChoice.TEMPERATURE:
         return data.temp;
+      case DataChoice.FEELS_LIKE:
+        return data.feels_like;
       case DataChoice.WIND_SPEED:
         return data.wind_speed;
     }
@@ -39,6 +42,7 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
   const getUnits = () => {
     switch (dataChoice) {
       case DataChoice.TEMPERATURE:
+      case DataChoice.FEELS_LIKE:
         return '°';
       case DataChoice.WIND_SPEED:
         return ' mph';
@@ -103,7 +107,11 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
         },
       )}
       <ButtonGroup
-        buttons={['Temperature', 'Wind Speed']}
+        buttons={['Temperature', 'Feels Like', 'Wind Speed']}
+        buttonStyle={styles.buttonGroupButton}
+        containerStyle={styles.buttonGroupContainer}
+        buttonContainerStyle={styles.buttonGroupContainer}
+        selectedIndex={dataChoice}
         onPress={(index) => setDataChoice(index)}
       />
     </View>
@@ -158,6 +166,13 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#b5b3b8',
+  },
+  buttonGroupButton: {
+    borderRadius: 10,
+    backgroundColor: '#f3f0f6',
+  },
+  buttonGroupContainer: {
+    borderColor: '#fff',
   },
   header: {
     alignSelf: 'center',
