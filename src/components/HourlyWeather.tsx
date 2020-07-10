@@ -53,8 +53,8 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
    */
   const getTemperatureWidthOffset = (temperature: number): string => {
     // TODO: magic numbers
-    const minWidth = 0.3;
-    const maxWidth = 0.82;
+    const minWidth = 0.45;
+    const maxWidth = 0.88;
 
     const normalizedTemperature = (Math.round(temperature) - min) / (max - min);
     const width = minWidth + normalizedTemperature * (maxWidth - minWidth);
@@ -84,18 +84,15 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
           return (
             <View style={styles.hourLine}>
               <Text style={styles.time}>{getTimeString(data.dt, false)}</Text>
-              <View style={styles.valueLine}>
-                <View
-                  style={{
-                    ...styles.descriptionContainer,
-                    width: getTemperatureWidthOffset(getValue(data)),
-                  }}>
-                  {description ? (
-                    <Text style={styles.description}>{description}</Text>
-                  ) : null}
-
-                  <View style={styles.line} />
-                </View>
+              <View
+                style={{
+                  ...styles.valueLine,
+                  width: getTemperatureWidthOffset(getValue(data)),
+                }}>
+                {description ? (
+                  <Text style={styles.description}>{description}</Text>
+                ) : null}
+                <View style={styles.line} />
                 <Text style={styles.value}>
                   {Math.round(getValue(data))}
                   {getUnits()}
@@ -133,14 +130,9 @@ const styles = StyleSheet.create({
   },
   valueLine: {
     flexDirection: 'row',
-    flexGrow: 1,
+    alignItems: 'center',
     padding: 4,
-    alignItems: 'center',
-  },
-  descriptionContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingStart: 8,
+    paddingStart: 12,
     paddingEnd: 8,
   },
   description: {
@@ -161,6 +153,7 @@ const styles = StyleSheet.create({
     padding: 4,
     paddingTop: 3,
     paddingBottom: 3,
+    marginStart: 8,
     backgroundColor: '#f3f0f6',
     borderRadius: 12,
     borderWidth: 1,
