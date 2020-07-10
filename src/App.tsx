@@ -1,7 +1,10 @@
 import React from 'react';
-import {SafeAreaView, ScrollView, Text, StatusBar} from 'react-native';
+import {SafeAreaView, ScrollView, ActivityIndicator, View} from 'react-native';
 import useCurrentLocation from './hooks/useCurrentLocation';
 import useWeatherApi from './hooks/useWeatherApi';
+import {CurrentWeather} from './components/CurrentWeather';
+import {WeatherData} from './types';
+import {HourlyWeather} from './components/HourlyWeather';
 
 const App = () => {
   const {currentLocationState: currentPositionState} = useCurrentLocation();
@@ -18,16 +21,32 @@ const App = () => {
   }, [currentPositionState.data]);
 
   React.useEffect(() => {
+    if (!weatherApiState.data) {
+      return;
+    }
+
     console.log(weatherApiState.data.current);
   }, [weatherApiState.data]);
 
+  const renderWeatherData = (data: WeatherData) => {
+    return (
+      <ScrollView>
+        <CurrentWeather data={data.current} />
+        <HourlyWeather data={data.hourly} />
+      </ScrollView>
+    );
+  };
+
   return (
     <>
-      <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <ScrollView contentInsetAdjustmentBehavior="automatic">
-          <Text style={{textAlign: 'center'}}>Weather</Text>
-        </ScrollView>
+        {weatherApiState.data ? (
+          renderWeatherData(weatherApiState.data)
+        ) : (
+          <View style={{flex: 1, justifyContent: 'center'}}>
+            <ActivityIndicator />
+          </View>
+        )}
       </SafeAreaView>
     </>
   );
