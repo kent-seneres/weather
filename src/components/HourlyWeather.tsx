@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import {Text, ButtonGroup} from 'react-native-elements';
 import {HourlyWeatherData} from '../types';
 import getWeatherDescription from '../helpers/getWeatherDescription';
@@ -22,8 +22,11 @@ export interface HourlyWeatherProps {
 export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
   data: hourlyData,
 }) => {
+  const [showFull, setShowFull] = React.useState<boolean>(false);
+
   const dataToDisplay = hourlyData.filter(
-    (_: HourlyWeatherData, index: number) => index < 24 && index % 2 === 0,
+    (_: HourlyWeatherData, index: number) =>
+      showFull || (index < 24 && index % 2 === 0),
   );
 
   const [dataChoice, setDataChoice] = React.useState<DataChoice>(
@@ -94,13 +97,17 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
 
           return (
             <View style={styles.hourLine}>
-              <View
-                style={{
-                  ...styles.descriptionColorBlock,
-                  ...colorBlockStyle,
-                  backgroundColor: getWeatherColor(data.weather[0]),
-                }}
-              />
+              <TouchableWithoutFeedback
+                onLongPress={() => setShowFull((val) => !val)}>
+                <View
+                  style={{
+                    ...styles.descriptionColorBlock,
+                    ...colorBlockStyle,
+                    backgroundColor: getWeatherColor(data.weather[0]),
+                  }}
+                />
+              </TouchableWithoutFeedback>
+
               <Text style={styles.time}>{getTimeString(data.dt, false)}</Text>
               <View
                 style={{
