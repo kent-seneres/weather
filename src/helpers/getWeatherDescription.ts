@@ -4,7 +4,7 @@ import {Weather} from '../types';
  * Get weather condition description from the code.
  * See: https://openweathermap.org/weather-conditions#Weather-Condition-Codes-2
  */
-const getWeatherDescription = (data: Weather | null): String => {
+const getWeatherDescription = (data: Weather | null): string => {
   const group = data?.id ? Math.round(data.id / 100) : null;
   switch (group) {
     case 2:
@@ -16,7 +16,7 @@ const getWeatherDescription = (data: Weather | null): String => {
         case 500:
           return 'Light Rain';
         case 501:
-          return 'Moderate';
+          return 'Moderate Rain';
         case 502:
         case 503:
         case 504:
@@ -81,9 +81,8 @@ const getWeatherDescription = (data: Weather | null): String => {
     case 8: {
       switch (data.id) {
         case 800:
-          return 'Clear';
         case 801:
-          return 'Few Clouds';
+          return 'Clear';
         case 802:
           return 'Partly Cloudy';
         case 803:

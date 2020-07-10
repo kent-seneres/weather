@@ -4,6 +4,7 @@ import {Text, ButtonGroup} from 'react-native-elements';
 import {HourlyWeatherData} from '../types';
 import getWeatherDescription from '../helpers/getWeatherDescription';
 import getTimeString from '../helpers/getTimeString';
+import getWeatherColor from '../helpers/getWeatherColor';
 
 enum DataChoice {
   TEMPERATURE,
@@ -57,8 +58,8 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
    */
   const getTemperatureWidthOffset = (temperature: number): string => {
     // TODO: magic numbers
-    const minWidth = 0.45;
-    const maxWidth = 0.88;
+    const minWidth = 0.42;
+    const maxWidth = 0.78;
 
     const normalizedTemperature = (Math.round(temperature) - min) / (max - min);
     const width = minWidth + normalizedTemperature * (maxWidth - minWidth);
@@ -68,7 +69,6 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Hourly</Text>
       {dataToDisplay.map(
         (
           data: HourlyWeatherData,
@@ -85,8 +85,22 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
               ? null
               : currentDescription;
 
+          const colorBlockStyle =
+            index === 0
+              ? styles.roundedTop
+              : index === array.length - 1
+              ? styles.roundedBottom
+              : {};
+
           return (
             <View style={styles.hourLine}>
+              <View
+                style={{
+                  ...styles.descriptionColorBlock,
+                  ...colorBlockStyle,
+                  backgroundColor: getWeatherColor(data.weather[0]),
+                }}
+              />
               <Text style={styles.time}>{getTimeString(data.dt, false)}</Text>
               <View
                 style={{
@@ -130,7 +144,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignContent: 'flex-start',
     alignItems: 'center',
-    padding: 2,
   },
   time: {
     width: '14%',
@@ -148,6 +161,19 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginEnd: 8,
   },
+  descriptionColorBlock: {
+    width: '8%',
+    alignSelf: 'stretch',
+    backgroundColor: '#ccc',
+  },
+  roundedTop: {
+    borderTopEndRadius: 6,
+    borderTopStartRadius: 6,
+  },
+  roundedBottom: {
+    borderBottomEndRadius: 6,
+    borderBottomStartRadius: 6,
+  },
   line: {
     backgroundColor: '#d9d7dc',
     height: 2,
@@ -157,6 +183,8 @@ const styles = StyleSheet.create({
     borderColor: '#d9d7dc',
   },
   value: {
+    marginTop: 1,
+    marginBottom: 1,
     paddingStart: 8,
     padding: 4,
     paddingTop: 3,
