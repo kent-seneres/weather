@@ -208,11 +208,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#f3f0f6',
   },
   buttonGroupText: {
-    fontSize: 12,
+    fontSize: 14,
   },
   buttonGroupContainer: {
     padding: 2,
-    borderColor: '#fff',
+    borderRadius: 10,
+    backgroundColor: null,
+    borderEndWidth: 0,
+    borderWidth: 0,
   },
   header: {
     alignSelf: 'center',

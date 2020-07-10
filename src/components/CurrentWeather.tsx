@@ -17,7 +17,7 @@ export const CurrentWeather: React.FC<CurrentWeatherProps> = ({data}) => {
   return (
     <View style={styles.container}>
       <View style={styles.currentContainer}>
-        <Image source={icon} />
+        <Image style={styles.icon} source={icon} />
         <View style={styles.temperatureContainer}>
           <Text h2>{Math.round(data.temp)}°</Text>
           <Text>Feels {Math.round(data.feels_like)}°</Text>
@@ -32,6 +32,7 @@ export const CurrentWeather: React.FC<CurrentWeatherProps> = ({data}) => {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 8,
     flex: 1,
     padding: 4,
     justifyContent: 'center',
@@ -47,5 +48,9 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     flexDirection: 'row',
     marginBottom: 4,
+  },
+  icon: {
+    height: '75%',
+    marginEnd: 8,
   },
 });
