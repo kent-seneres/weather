@@ -1,9 +1,14 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Text} from 'react-native-elements';
+import {Text, ButtonGroup} from 'react-native-elements';
 import {HourlyWeatherData} from '../types';
 import getWeatherDescription from '../helpers/getWeatherDescription';
 import getTimeString from '../helpers/getTimeString';
+
+enum DataChoice {
+  TEMPERATURE,
+  WIND_SPEED,
+}
 
 export interface HourlyWeatherProps {
   data: HourlyWeatherData[];
@@ -12,14 +17,36 @@ export interface HourlyWeatherProps {
 /**
  * Component that shows hourly weather data in a graph like form.
  */
-export const HourlyWeather: React.FC<HourlyWeatherProps> = ({data}) => {
-  const dataToDisplay = data.filter(
+export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
+  data: hourlyData,
+}) => {
+  const dataToDisplay = hourlyData.filter(
     (_: HourlyWeatherData, index: number) => index < 24 && index % 2 === 0,
   );
 
-  const temperatures = dataToDisplay.map((value) => value.temp);
-  const min = Math.min(...temperatures);
-  const max = Math.max(...temperatures);
+  const [dataChoice, setDataChoice] = React.useState<DataChoice>(
+    DataChoice.TEMPERATURE,
+  );
+
+  const getValue = (data: HourlyWeatherData) => {
+    switch (dataChoice) {
+      case DataChoice.TEMPERATURE:
+        return data.temp;
+      case DataChoice.WIND_SPEED:
+        return data.wind_speed;
+    }
+  };
+  const getUnits = () => {
+    switch (dataChoice) {
+      case DataChoice.TEMPERATURE:
+        return '°';
+      case DataChoice.WIND_SPEED:
+        return ' mph';
+    }
+  };
+  const values = dataToDisplay.map((data) => getValue(data));
+  const min = Math.min(...values);
+  const max = Math.max(...values);
 
   /**
    * Get the width percentage for the value relative to the entire data set.
@@ -40,11 +67,11 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({data}) => {
       <Text style={styles.header}>Hourly</Text>
       {dataToDisplay.map(
         (
-          value: HourlyWeatherData,
+          data: HourlyWeatherData,
           index: number,
           array: HourlyWeatherData[],
         ) => {
-          const currentDescription = getWeatherDescription(value.weather[0]);
+          const currentDescription = getWeatherDescription(data.weather[0]);
           const previousDescription = getWeatherDescription(
             array[index - 1]?.weather[0],
           );
@@ -56,12 +83,12 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({data}) => {
 
           return (
             <View style={styles.hourLine}>
-              <Text style={styles.time}>{getTimeString(value.dt, false)}</Text>
+              <Text style={styles.time}>{getTimeString(data.dt, false)}</Text>
               <View style={styles.valueLine}>
                 <View
                   style={{
                     ...styles.descriptionContainer,
-                    width: getTemperatureWidthOffset(value.temp),
+                    width: getTemperatureWidthOffset(getValue(data)),
                   }}>
                   {description ? (
                     <Text style={styles.description}>{description}</Text>
@@ -69,12 +96,19 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({data}) => {
 
                   <View style={styles.line} />
                 </View>
-                <Text style={styles.value}>{Math.round(value.temp)}°</Text>
+                <Text style={styles.value}>
+                  {Math.round(getValue(data))}
+                  {getUnits()}
+                </Text>
               </View>
             </View>
           );
         },
       )}
+      <ButtonGroup
+        buttons={['Temperature', 'Wind Speed']}
+        onPress={(index) => setDataChoice(index)}
+      />
     </View>
   );
 };
