@@ -9,13 +9,35 @@ export interface CurrentWeatherProps {
   data: CurrentWeatherData;
 }
 
+const SHOW_TIMESTAMP_DURATION_MS = 3000;
+
 /**
  * Component that shows the current weather data.
  */
 export const CurrentWeather: React.FC<CurrentWeatherProps> = ({data}) => {
+  const [timer, setTimer] = React.useState<NodeJS.Timer>(null);
+  const [showTimestamp, setShowTimestamp] = React.useState<boolean>(true);
+
+  React.useEffect(() => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    setShowTimestamp(true);
+    const timeoutId = setTimeout(() => {
+      setShowTimestamp(false);
+    }, SHOW_TIMESTAMP_DURATION_MS);
+    setTimer(timeoutId);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data.dt]);
+
   const icon = getIcon(data.weather[0].icon);
   return (
     <View style={styles.container}>
+      {showTimestamp ? (
+        <Text>Updated: {new Date(data.dt * 1000).toLocaleString()}</Text>
+      ) : null}
       <View style={styles.currentContainer}>
         <Image style={styles.icon} source={icon} />
         <View style={styles.temperatureContainer}>

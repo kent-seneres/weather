@@ -115,6 +115,7 @@ const useCurrentLocation = () => {
           payload: error.message,
         });
       },
+      {timeout: 15000, maximumAge: 10000},
     );
   }, [permissionGranted, state.isLoading]);
 
