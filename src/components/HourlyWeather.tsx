@@ -96,7 +96,7 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
               : {};
 
           return (
-            <View style={styles.hourLine}>
+            <View key={data.dt} style={styles.hourLine}>
               <TouchableWithoutFeedback
                 onLongPress={() => setShowFull((val) => !val)}>
                 <View

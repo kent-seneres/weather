@@ -94,11 +94,10 @@ const useCurrentLocation = () => {
    * Effect hook that fetches the current position once the location permission has been granted.
    */
   React.useEffect(() => {
-    if (!permissionGranted) {
+    if (!permissionGranted || !state.isLoading) {
       return;
     }
 
-    dispatch({type: Actions.LOAD});
     Geolocation.getCurrentPosition(
       (position) => {
         dispatch({
@@ -117,9 +116,11 @@ const useCurrentLocation = () => {
         });
       },
     );
-  }, [permissionGranted]);
+  }, [permissionGranted, state.isLoading]);
 
-  return {currentLocationState: state};
+  const getLocation = () => dispatch({type: Actions.LOAD});
+
+  return {currentLocationState: state, getLocation};
 };
 
 export default useCurrentLocation;
