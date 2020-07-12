@@ -55,7 +55,9 @@ export const DailyWeather: React.FC<DailyWeatherProps> = ({
 
     return (
       <>
-        {availableHourlyData.length === 0 ? null : (
+        {availableHourlyData.length === 0 ? (
+          <Text style={styles.detailText}>No hourly data available.</Text>
+        ) : (
           <HourlyWeather data={availableHourlyData} />
         )}
         <Text style={styles.detailText}>
