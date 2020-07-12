@@ -8,8 +8,9 @@ import getWeatherColor from '../helpers/getWeatherColor';
 
 enum DataChoice {
   TEMPERATURE,
-  FEELS_LIKE,
   WIND_SPEED,
+  HUMIDITY,
+  CLOUDS,
 }
 
 export interface HourlyWeatherProps {
@@ -37,19 +38,23 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
     switch (dataChoice) {
       case DataChoice.TEMPERATURE:
         return data.temp;
-      case DataChoice.FEELS_LIKE:
-        return data.feels_like;
       case DataChoice.WIND_SPEED:
         return data.wind_speed;
+      case DataChoice.HUMIDITY:
+        return data.humidity;
+      case DataChoice.CLOUDS:
+        return data.clouds;
     }
   };
   const getUnits = () => {
     switch (dataChoice) {
       case DataChoice.TEMPERATURE:
-      case DataChoice.FEELS_LIKE:
         return '°';
       case DataChoice.WIND_SPEED:
         return ' mph';
+      case DataChoice.HUMIDITY:
+      case DataChoice.CLOUDS:
+        return ' %';
     }
   };
   const values = dataToDisplay.map((data) => getValue(data));
@@ -128,7 +133,7 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
         },
       )}
       <ButtonGroup
-        buttons={['Temperature', 'Feels Like', 'Wind Speed']}
+        buttons={['Temp', 'Wind', 'Humidity', 'Clouds']}
         buttonStyle={styles.buttonGroupButton}
         textStyle={styles.buttonGroupText}
         containerStyle={styles.buttonGroupContainer}
