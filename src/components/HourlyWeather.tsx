@@ -60,8 +60,8 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
         return '°';
       case DataChoice.WIND_SPEED:
         return ' mph';
-      case DataChoice.HUMIDITY:
       case DataChoice.CLOUDS:
+      case DataChoice.HUMIDITY:
         return ' %';
     }
   };
@@ -72,10 +72,8 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
   /**
    * Get the relative percentage of the value compared to the entire data set.
    */
-  const getValueRelativePercent = (value: number): number => {
-    const normalizedTemperature = (value - min) / (max - min);
-    return normalizedTemperature;
-  };
+  const getValueRelativePercent = (value: number): number =>
+    (value - min) / (max - min);
 
   return (
     <View style={styles.container}>

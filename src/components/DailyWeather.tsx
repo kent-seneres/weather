@@ -1,76 +1,54 @@
 import React from 'react';
-import {View, StyleSheet, Image} from 'react-native';
-import {Text} from 'react-native-elements';
-import {DailyWeatherData, DailyTemperature} from '../types';
-import getIcon from '../helpers/getIcon';
-import getDayString from '../helpers/getDayString';
+import {View, StyleSheet} from 'react-native';
+import {DailyWeatherData} from '../types';
+import {DailyWeatherLine} from './DailyWeatherLine';
 
 export interface DailyWeatherProps {
   data: DailyWeatherData[];
 }
 
+/**
+ * Component that shows daily weather data in a graph like form.
+ */
 export const DailyWeather: React.FC<DailyWeatherProps> = ({data}) => {
-  const minTemperatures = data.map((dailyData) => dailyData.temp.min);
-  const maxTemperatures = data.map((dailyData) => dailyData.temp.max);
+  const minTemperatures = data.map((dailyData) =>
+    Math.round(dailyData.temp.min),
+  );
+  const maxTemperatures = data.map((dailyData) =>
+    Math.round(dailyData.temp.max),
+  );
   const min = Math.min(...minTemperatures);
   const max = Math.max(...maxTemperatures);
 
-  const getTemperatureWidthOffset = (temperature: DailyTemperature): string => {
-    // TODO: magic numbers
-    const minWidth = 0;
-    const maxWidth = 0.75;
+  const getRelativeOffsetPercent = (value: number) =>
+    (value - min) / (max - min);
 
-    const normalizedTemperature =
-      (Math.round(temperature.min) - min) / (max - min);
-    const width = minWidth + normalizedTemperature * (maxWidth - minWidth);
-
-    return `${width * 100}%`;
-  };
-
-  const getTemperatureWidth = (temperature: DailyTemperature): string => {
-    const maxWidth = 0.7;
-    const range = Math.round(temperature.max) - Math.round(temperature.min);
-
-    const normalized = range / (max - min);
-    const width = normalized * maxWidth;
-
-    return `${width * 100}%`;
-  };
+  const getRelativeWidthPercent = (
+    minValue: number,
+    maxValue: number,
+  ): number => (maxValue - minValue) / (max - min);
 
   return (
     <View style={styles.container}>
       {data.map((dailyData: DailyWeatherData) => {
-        const offset = getTemperatureWidthOffset(dailyData.temp);
-        const width = getTemperatureWidth(dailyData.temp);
+        // TODO: deal with multiple weather values in the array
+        const weatherDetail = dailyData.weather[0];
+
+        const minValue = Math.round(dailyData.temp.min);
+        const maxValue = Math.round(dailyData.temp.max);
+        const offset = getRelativeOffsetPercent(minValue);
+        const width = getRelativeWidthPercent(minValue, maxValue);
+
         return (
-          <View key={dailyData.dt} style={styles.dayLine}>
-            <Text style={styles.time}>
-              {getDayString(dailyData.dt).toUpperCase()}
-            </Text>
-            <Image
-              style={styles.icon}
-              source={getIcon(dailyData.weather[0].icon)}
-            />
-            <View style={styles.valueLine}>
-              <View
-                style={{
-                  width: offset,
-                }}
-              />
-              <Text style={styles.value}>
-                {Math.round(dailyData.temp.min)}°
-              </Text>
-              <View
-                style={{
-                  ...styles.line,
-                  width: width,
-                }}
-              />
-              <Text style={styles.value}>
-                {Math.round(dailyData.temp.max)}°
-              </Text>
-            </View>
-          </View>
+          <DailyWeatherLine
+            key={dailyData.dt}
+            timestamp={dailyData.dt}
+            iconId={weatherDetail?.icon}
+            minValue={`${minValue}°`}
+            maxValue={`${maxValue}°`}
+            widthPercent={width}
+            offsetPercent={offset}
+          />
         );
       })}
     </View>
@@ -84,36 +62,5 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     flexDirection: 'column',
     alignItems: 'stretch',
-  },
-  dayLine: {
-    flex: 1,
-    flexDirection: 'row',
-    alignContent: 'flex-start',
-    alignItems: 'center',
-  },
-  time: {
-    width: '13%',
-  },
-  icon: {
-    width: '10%',
-  },
-  valueLine: {
-    flexGrow: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 4,
-    paddingStart: 12,
-    paddingEnd: 8,
-  },
-  line: {
-    width: 50,
-    height: 28,
-    backgroundColor: '#f3f0f6',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#d9d7dc',
-  },
-  value: {
-    padding: 4,
   },
 });
