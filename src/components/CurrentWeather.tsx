@@ -32,14 +32,13 @@ export const CurrentWeather: React.FC<CurrentWeatherProps> = ({data}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.dt]);
 
-  const icon = getIcon(data.weather[0].icon);
   return (
     <View style={styles.container}>
       {showTimestamp ? (
         <Text>Updated: {new Date(data.dt * 1000).toLocaleString()}</Text>
       ) : null}
       <View style={styles.currentContainer}>
-        <Image style={styles.icon} source={icon} />
+        <Image style={styles.icon} source={getIcon(data.weather[0].icon)} />
         <View style={styles.temperatureContainer}>
           <Text h2>{Math.round(data.temp)}°</Text>
           <Text>Feels {Math.round(data.feels_like)}°</Text>

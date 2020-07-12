@@ -10,6 +10,7 @@ import useWeatherApi from './hooks/useWeatherApi';
 import {CurrentWeather} from './components/CurrentWeather';
 import {WeatherData} from './types';
 import {HourlyWeather} from './components/HourlyWeather';
+import {DailyWeather} from './components/DailyWeather';
 
 const App = () => {
   const {currentLocationState, getLocation} = useCurrentLocation();
@@ -67,6 +68,7 @@ const App = () => {
           <>
             <CurrentWeather data={data.current} />
             <HourlyWeather data={data.hourly} />
+            <DailyWeather data={data.daily} />
           </>
         ) : null}
       </ScrollView>

@@ -183,12 +183,9 @@ const styles = StyleSheet.create({
     borderBottomStartRadius: 6,
   },
   line: {
-    backgroundColor: '#d9d7dc',
-    height: 2,
     flexGrow: 1,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#d9d7dc',
+    height: 1,
+    backgroundColor: '#d9d7dc',
   },
   value: {
     marginTop: 1,
@@ -201,7 +198,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f3f0f6',
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#b5b3b8',
+    borderColor: '#d9d7dc',
   },
   buttonGroupButton: {
     borderRadius: 10,
@@ -216,8 +213,5 @@ const styles = StyleSheet.create({
     backgroundColor: null,
     borderEndWidth: 0,
     borderWidth: 0,
-  },
-  header: {
-    alignSelf: 'center',
   },
 });
