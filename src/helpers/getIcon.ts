@@ -1,5 +1,10 @@
+/**
+ * Get weather icon from the code.
+ * See: https://openweathermap.org/weather-conditions#Icon-list
+ */
 const getIcon = (iconCode: string): any => {
   switch (iconCode) {
+    // day icons
     case '01d':
       return require('../assets/weather-icons/01d.png');
     case '02d':
@@ -18,6 +23,8 @@ const getIcon = (iconCode: string): any => {
       return require('../assets/weather-icons/13d.png');
     case '50d':
       return require('../assets/weather-icons/50d.png');
+
+    // night icons
     case '01n':
       return require('../assets/weather-icons/01n.png');
     case '02n':
@@ -42,15 +49,3 @@ const getIcon = (iconCode: string): any => {
 };
 
 export default getIcon;
-
-/**
- * 01d.png 	01n.png 	clear sky
-02d.png 	02n.png 	few clouds
-03d.png 	03n.png 	scattered clouds
-04d.png 	04n.png 	broken clouds
-09d.png 	09n.png 	shower rain
-10d.png 	10n.png 	rain
-11d.png 	11n.png 	thunderstorm
-13d.png 	13n.png 	snow
-50d.png 	50n.png 	mist 
- */

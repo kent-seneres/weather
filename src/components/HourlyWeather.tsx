@@ -1,16 +1,16 @@
 import React from 'react';
-import {View, StyleSheet, TouchableWithoutFeedback} from 'react-native';
-import {Text, ButtonGroup} from 'react-native-elements';
+import {View, StyleSheet} from 'react-native';
+import {ButtonGroup} from 'react-native-elements';
 import {HourlyWeatherData} from '../types';
 import getWeatherDescription from '../helpers/getWeatherDescription';
-import getTimeString from '../helpers/getTimeString';
 import getWeatherColor from '../helpers/getWeatherColor';
+import {HourlyWeatherLine} from './HourlyWeatherLine';
 
 enum DataChoice {
   TEMPERATURE,
   WIND_SPEED,
-  HUMIDITY,
   CLOUDS,
+  HUMIDITY,
 }
 
 export interface HourlyWeatherProps {
@@ -35,17 +35,25 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
   );
 
   const getValue = (data: HourlyWeatherData) => {
+    let value: number;
     switch (dataChoice) {
       case DataChoice.TEMPERATURE:
-        return data.temp;
+        value = data.temp;
+        break;
       case DataChoice.WIND_SPEED:
-        return data.wind_speed;
-      case DataChoice.HUMIDITY:
-        return data.humidity;
+        value = data.wind_speed;
+        break;
       case DataChoice.CLOUDS:
-        return data.clouds;
+        value = data.clouds;
+        break;
+      case DataChoice.HUMIDITY:
+        value = data.humidity;
+        break;
     }
+
+    return Math.round(value);
   };
+
   const getUnits = () => {
     switch (dataChoice) {
       case DataChoice.TEMPERATURE:
@@ -57,22 +65,16 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
         return ' %';
     }
   };
-  const values = dataToDisplay.map((data) => getValue(data));
+  const values = dataToDisplay.map((data) => Math.round(getValue(data)));
   const min = Math.min(...values);
   const max = Math.max(...values);
 
   /**
-   * Get the width percentage for the value relative to the entire data set.
+   * Get the relative percentage of the value compared to the entire data set.
    */
-  const getTemperatureWidthOffset = (temperature: number): string => {
-    // TODO: magic numbers
-    const minWidth = 0.42;
-    const maxWidth = 0.78;
-
-    const normalizedTemperature = (Math.round(temperature) - min) / (max - min);
-    const width = minWidth + normalizedTemperature * (maxWidth - minWidth);
-
-    return `${width * 100}%`;
+  const getValueRelativePercent = (value: number): number => {
+    const normalizedTemperature = (value - min) / (max - min);
+    return normalizedTemperature;
   };
 
   return (
@@ -83,7 +85,9 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
           index: number,
           array: HourlyWeatherData[],
         ) => {
-          const currentDescription = getWeatherDescription(data.weather[0]);
+          // TODO: deal with multiple weather values in the array
+          const weatherDetail = data.weather[0];
+          const currentDescription = getWeatherDescription(weatherDetail);
           const previousDescription = getWeatherDescription(
             array[index - 1]?.weather[0],
           );
@@ -93,47 +97,25 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
               ? null
               : currentDescription;
 
-          const colorBlockStyle =
-            index === 0
-              ? styles.roundedTop
-              : index === array.length - 1
-              ? styles.roundedBottom
-              : {};
-
+          const value = getValue(data);
           return (
-            <View key={data.dt} style={styles.hourLine}>
-              <TouchableWithoutFeedback
-                onLongPress={() => setShowFull((val) => !val)}>
-                <View
-                  style={{
-                    ...styles.descriptionColorBlock,
-                    ...colorBlockStyle,
-                    backgroundColor: getWeatherColor(data.weather[0]),
-                  }}
-                />
-              </TouchableWithoutFeedback>
-
-              <Text style={styles.time}>{getTimeString(data.dt, false)}</Text>
-              <View
-                style={{
-                  ...styles.valueLine,
-                  width: getTemperatureWidthOffset(getValue(data)),
-                }}>
-                {description ? (
-                  <Text style={styles.description}>{description}</Text>
-                ) : null}
-                <View style={styles.line} />
-                <Text style={styles.value}>
-                  {Math.round(getValue(data))}
-                  {getUnits()}
-                </Text>
-              </View>
-            </View>
+            <HourlyWeatherLine
+              key={data.dt}
+              timestamp={data.dt}
+              color={getWeatherColor(weatherDetail?.id)}
+              description={description}
+              roundedTop={index === 0}
+              roundedBottom={index === array.length - 1}
+              offsetPercent={getValueRelativePercent(value)}
+              value={value}
+              unit={getUnits()}
+              onPress={() => setShowFull((val) => !val)}
+            />
           );
         },
       )}
       <ButtonGroup
-        buttons={['Temp', 'Wind', 'Humidity', 'Clouds']}
+        buttons={['Temp', 'Wind', 'Clouds', 'Humidity']}
         buttonStyle={styles.buttonGroupButton}
         textStyle={styles.buttonGroupText}
         containerStyle={styles.buttonGroupContainer}
@@ -151,59 +133,6 @@ const styles = StyleSheet.create({
     padding: 16,
     flexDirection: 'column',
     alignItems: 'stretch',
-  },
-  hourLine: {
-    flex: 1,
-    flexDirection: 'row',
-    alignContent: 'flex-start',
-    alignItems: 'center',
-  },
-  time: {
-    width: '14%',
-    textAlign: 'right',
-  },
-  valueLine: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 4,
-    paddingStart: 12,
-    paddingEnd: 8,
-  },
-  description: {
-    fontStyle: 'italic',
-    fontSize: 12,
-    marginEnd: 8,
-  },
-  descriptionColorBlock: {
-    width: '8%',
-    alignSelf: 'stretch',
-    backgroundColor: '#ccc',
-  },
-  roundedTop: {
-    borderTopEndRadius: 6,
-    borderTopStartRadius: 6,
-  },
-  roundedBottom: {
-    borderBottomEndRadius: 6,
-    borderBottomStartRadius: 6,
-  },
-  line: {
-    flexGrow: 1,
-    height: 1,
-    backgroundColor: '#d9d7dc',
-  },
-  value: {
-    marginTop: 1,
-    marginBottom: 1,
-    paddingStart: 8,
-    padding: 4,
-    paddingTop: 3,
-    paddingBottom: 3,
-    marginStart: 8,
-    backgroundColor: '#f3f0f6',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#d9d7dc',
   },
   buttonGroupButton: {
     borderRadius: 10,

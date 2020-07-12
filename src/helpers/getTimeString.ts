@@ -6,7 +6,7 @@ const getPaddedString = (value: number): string =>
 
 /**
  * Build a time string in the format of HH:MM AM/PM
- * @param timestamp UNIX timestamp
+ * @param timestamp UNIX timestamp in seconds
  * @param showMinutes include the minutes, default true
  * @param showPeriod include the AM / PM designator
  */

@@ -1,17 +1,16 @@
-import {Weather} from '../types';
-
 /**
- * Get a color value corresponding to the weather condition.
+ * Get a color value corresponding to the weather condition id.
+ * TODO: consolidate colors
  */
-const getWeatherColor = (data: Weather | null): string => {
-  const group = data?.id ? Math.round(data.id / 100) : null;
+const getWeatherColor = (weatherId: number | null): string => {
+  const group = weatherId ? Math.round(weatherId / 100) : null;
   switch (group) {
     case 2:
       return '#424e5b';
     case 3:
       return '#b6d5f9';
     case 5: {
-      switch (data.id) {
+      switch (weatherId) {
         case 500:
           return '#b6d5f9';
         case 501:
@@ -27,7 +26,7 @@ const getWeatherColor = (data: Weather | null): string => {
       }
     }
     case 6: {
-      switch (data.id) {
+      switch (weatherId) {
         case 600:
           return '#a0ceeb';
         case 601:
@@ -54,7 +53,7 @@ const getWeatherColor = (data: Weather | null): string => {
       return '#24272a';
     }
     case 8: {
-      switch (data.id) {
+      switch (weatherId) {
         case 800:
         case 801:
           return '#cccfd2';
