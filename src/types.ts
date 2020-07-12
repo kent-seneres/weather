@@ -6,26 +6,21 @@ export interface WeatherData {
   daily: DailyWeatherData[];
 }
 
-export interface CurrentWeatherData {
+export interface HourlyWeatherData extends WeatherData {
   dt: number;
-  sunset: number;
-  sunrise: number;
   temp: number;
   feels_like: number;
   humidity: number;
   clouds: number;
   wind_speed: number;
   weather: Weather[];
+  rain: Precipitation;
+  snow: Precipitation;
 }
 
-export interface HourlyWeatherData {
-  dt: number;
-  temp: number;
-  feels_like: number;
-  humidity: number;
-  clouds: number;
-  wind_speed: number;
-  weather: Weather[];
+export interface CurrentWeatherData extends HourlyWeatherData {
+  sunset: number;
+  sunrise: number;
 }
 
 export interface DailyWeatherData {
@@ -35,11 +30,11 @@ export interface DailyWeatherData {
   temp: DailyTemperature;
   feels_like: DailyFeelsLike;
   humidity: number;
-  wind_speed: number;
   clouds: number;
+  wind_speed: number;
+  weather: Weather[];
   rain: number;
   snow: number;
-  weather: Weather[];
 }
 
 export interface Weather {
@@ -47,6 +42,10 @@ export interface Weather {
   main: string;
   description: string;
   icon: string;
+}
+
+export interface Precipitation {
+  '1h': number;
 }
 
 export interface DailyTemperature {
@@ -58,11 +57,4 @@ export interface DailyTemperature {
   max: number;
 }
 
-export interface DailyFeelsLike {
-  morn: number;
-  day: number;
-  eve: number;
-  night: number;
-}
-
-// TODO: consolidate types
+export interface DailyFeelsLike extends Omit<DailyTemperature, 'min' | 'max'> {}
