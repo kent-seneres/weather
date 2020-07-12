@@ -47,8 +47,8 @@ export const HourlyWeatherLine: React.FC<HourlyWeatherLineProps> = ({
   const widthPercent = `${width * 100}%`;
 
   return (
-    <View style={styles.container}>
-      <TouchableWithoutFeedback onLongPress={onPress}>
+    <TouchableWithoutFeedback onLongPress={onPress}>
+      <View style={styles.container}>
         <View
           style={{
             ...styles.descriptionColorBlock,
@@ -56,24 +56,24 @@ export const HourlyWeatherLine: React.FC<HourlyWeatherLineProps> = ({
             backgroundColor: color,
           }}
         />
-      </TouchableWithoutFeedback>
 
-      <Text style={styles.time}>{getTimeString(timestamp, false)}</Text>
-      <View
-        style={{
-          ...styles.valueLine,
-          width: widthPercent,
-        }}>
-        {description ? (
-          <Text style={styles.description}>{description}</Text>
-        ) : null}
-        <View style={styles.line} />
-        <Text style={styles.value}>
-          {value}
-          {unit}
-        </Text>
+        <Text style={styles.time}>{getTimeString(timestamp, false)}</Text>
+        <View
+          style={{
+            ...styles.valueLine,
+            width: widthPercent,
+          }}>
+          {description ? (
+            <Text style={styles.description}>{description}</Text>
+          ) : null}
+          <View style={styles.line} />
+          <Text style={styles.value}>
+            {value}
+            {unit}
+          </Text>
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -83,6 +83,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignContent: 'flex-start',
     alignItems: 'center',
+    paddingStart: 16,
+    paddingEnd: 16,
   },
   time: {
     width: `${TIME_WIDTH_PERCENT * 100}%`,
@@ -93,7 +95,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 4,
     paddingStart: 12,
-    paddingEnd: 8,
   },
   description: {
     fontStyle: 'italic',

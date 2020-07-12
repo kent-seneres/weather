@@ -61,6 +61,7 @@ const App = () => {
   const renderWeatherData = (data: WeatherData) => {
     return (
       <ScrollView
+        showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
@@ -68,7 +69,7 @@ const App = () => {
           <>
             <CurrentWeather data={data.current} />
             <HourlyWeather data={data.hourly} />
-            <DailyWeather data={data.daily} />
+            <DailyWeather data={data.daily} hourlyData={data.hourly} />
           </>
         ) : null}
       </ScrollView>

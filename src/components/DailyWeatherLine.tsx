@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Image} from 'react-native';
+import {View, StyleSheet, Image, TouchableNativeFeedback} from 'react-native';
 import {Text} from 'react-native-elements';
 import getIcon from '../helpers/getIcon';
 import getDayString from '../helpers/getDayString';
@@ -11,6 +11,7 @@ export interface DailyWeatherLineProps {
   maxValue: string;
   widthPercent: number;
   offsetPercent: number;
+  onPress: () => void;
 }
 
 const TIME_WIDTH_PERCENT = 0.13;
@@ -29,30 +30,33 @@ export const DailyWeatherLine: React.FC<DailyWeatherLineProps> = ({
   maxValue,
   widthPercent,
   offsetPercent,
+  onPress,
 }) => {
   const offset = `${offsetPercent * MAX_WIDTH * 100}%`;
   const width = `${widthPercent * MAX_LINE_WIDTH * 100}%`;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.time}>{getDayString(timestamp).toUpperCase()}</Text>
-      <Image style={styles.icon} source={getIcon(iconId)} />
-      <View style={styles.valueLine}>
-        <View
-          style={{
-            width: offset,
-          }}
-        />
-        <Text style={styles.value}>{minValue}</Text>
-        <View
-          style={{
-            ...styles.line,
-            width: width,
-          }}
-        />
-        <Text style={styles.value}>{maxValue}</Text>
+    <TouchableNativeFeedback onPress={onPress}>
+      <View style={styles.container}>
+        <Text style={styles.time}>{getDayString(timestamp).toUpperCase()}</Text>
+        <Image style={styles.icon} source={getIcon(iconId)} />
+        <View style={styles.valueLine}>
+          <View
+            style={{
+              width: offset,
+            }}
+          />
+          <Text style={styles.value}>{minValue}</Text>
+          <View
+            style={{
+              ...styles.line,
+              width: width,
+            }}
+          />
+          <Text style={styles.value}>{maxValue}</Text>
+        </View>
       </View>
-    </View>
+    </TouchableNativeFeedback>
   );
 };
 
@@ -62,6 +66,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignContent: 'flex-start',
     alignItems: 'center',
+    paddingStart: 16,
+    paddingEnd: 16,
   },
   time: {
     width: `${TIME_WIDTH_PERCENT * 100}%`,

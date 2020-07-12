@@ -35,7 +35,9 @@ export const CurrentWeather: React.FC<CurrentWeatherProps> = ({data}) => {
   return (
     <View style={styles.container}>
       {showTimestamp ? (
-        <Text>Updated: {new Date(data.dt * 1000).toLocaleString()}</Text>
+        <Text style={styles.timestamp}>
+          Updated: {new Date(data.dt * 1000).toLocaleString()}
+        </Text>
       ) : null}
       <View style={styles.currentContainer}>
         <Image style={styles.icon} source={getIcon(data.weather[0].icon)} />
@@ -44,16 +46,17 @@ export const CurrentWeather: React.FC<CurrentWeatherProps> = ({data}) => {
           <Text>Feels {Math.round(data.feels_like)}°</Text>
         </View>
       </View>
-
-      <Text>Sunrise: {getTimeString(data.sunrise)}</Text>
-      <Text>Sunset: {getTimeString(data.sunset)}</Text>
+      <Text style={styles.detailText}>
+        Sunrise {getTimeString(data.sunrise)}
+        {'; '}
+        Sunset {getTimeString(data.sunset)}
+      </Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 8,
     flex: 1,
     padding: 4,
     justifyContent: 'center',
@@ -68,10 +71,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     flexDirection: 'row',
-    marginBottom: 4,
   },
   icon: {
     height: '75%',
     marginEnd: 8,
+  },
+  timestamp: {
+    marginTop: 12,
+    fontStyle: 'italic',
+  },
+  detailText: {
+    textAlign: 'center',
+    marginBottom: 12,
   },
 });
