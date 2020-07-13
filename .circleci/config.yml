@@ -33,10 +33,10 @@ workflows:
   build:
     jobs:
       - checkout_code
-      # - analyse_js:
-      #     requires:
-      #       - checkout_code
-      # - rn/android_build:
-      #     build_type: release
-      #     requires:
-      #       - analyse_js
+      - analyse_js:
+          requires:
+            - checkout_code
+      - rn/android_build:
+          build_type: release
+          requires:
+            - analyse_js
