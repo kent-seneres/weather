@@ -70,7 +70,8 @@ const weatherApiReducer: React.Reducer<WeatherApiState, any> = (
 const buildRequestUrl = (lat: number, lon: number) => {
   const URL = 'https://api.openweathermap.org/data/2.5/onecall';
   const units = 'imperial';
-  return `${URL}?lat=${lat}&lon=${lon}&units=${units}&appid=${Config.OWM_APP_ID}`;
+  const exclude = 'minutely';
+  return `${URL}?lat=${lat}&lon=${lon}&units=${units}&exclude=${exclude}&appid=${Config.OWM_APP_ID}`;
 };
 
 const useWeatherApi = () => {

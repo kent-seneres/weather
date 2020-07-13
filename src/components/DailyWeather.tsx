@@ -81,9 +81,8 @@ export const DailyWeather: React.FC<DailyWeatherProps> = ({
         const width = getRelativeWidthPercent(minValue, maxValue);
 
         return (
-          <>
+          <View key={dailyData.dt}>
             <DailyWeatherLine
-              key={dailyData.dt}
               timestamp={dailyData.dt}
               iconId={weatherDetail?.icon}
               minValue={`${minValue}°`}
@@ -95,7 +94,7 @@ export const DailyWeather: React.FC<DailyWeatherProps> = ({
             {showDetailIds.includes(dailyData.dt)
               ? renderDayDetails(dailyData)
               : null}
-          </>
+          </View>
         );
       })}
     </View>
