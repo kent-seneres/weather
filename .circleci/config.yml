@@ -18,7 +18,12 @@ jobs:
       - checkout
       - run:
           name: Create .env file
-          command: echo $ENV_DEV > .env
+          command: |
+            if [[ "$CIRCLE_TAG" =~ ^v.*-staging$ ]]; then
+              echo $ENV_STAGING > .env
+            else
+              echo $ENV_DEV > .env
+            fi
       - persist_to_workspace:
           paths: .
           root: .
