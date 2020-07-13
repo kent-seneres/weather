@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  react-native: react-native-community/react-native@4.4.2
+  rn: react-native-community/react-native@4.4.2
 
 jobs:
   analyse_js:
