@@ -35,7 +35,13 @@ workflows:
       - analyse_js:
           requires:
             - checkout_code
+          filters:
+            tags:
+              only: /^v.*/
       - rn/android_build:
           build_type: release
           requires:
             - analyse_js
+          filters:
+            tags:
+              only: /^v.*/
