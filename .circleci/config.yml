@@ -16,18 +16,12 @@ jobs:
     executor: rn/linux_js
     steps:
       - checkout
-      - persist_to_workspace:
-          paths: .
-          root: .
-      - run:
-          name: Check environment variable
-          command: echo $ENV_DEV
       - run:
           name: Create .env file
           command: echo $ENV_DEV > .env
-      - run:
-          name: Check .env file
-          command: cat .env
+      - persist_to_workspace:
+          paths: .
+          root: .
 
 workflows:
   build:
