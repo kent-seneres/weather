@@ -19,9 +19,12 @@ jobs:
       - persist_to_workspace:
           paths: .
           root: .
+      - run:
+          name: Create .env file
+          command: echo $ENV_DEV > .env
 
 workflows:
-  test:
+  build:
     jobs:
       - checkout_code
       - analyse_js:
