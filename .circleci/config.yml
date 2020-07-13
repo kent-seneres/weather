@@ -31,6 +31,3 @@ workflows:
           build_type: release
           requires:
             - analyse_js
-      - rn/android_test:
-          requires:
-            - rn/android_build
