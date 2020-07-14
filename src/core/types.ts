@@ -79,5 +79,5 @@ export interface WeatherAlertGroup {
   severity: string;
   effective_utc: string;
   expires_utc: string;
-  alerts: string[];
+  alerts?: string[];
 }

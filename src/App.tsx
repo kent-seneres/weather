@@ -13,11 +13,10 @@ import {WeatherData} from './core/types';
 import {HourlyWeather} from './components/HourlyWeather';
 import {DailyWeather} from './components/DailyWeather';
 import useWeather from './hooks/useWeather';
+import {WeatherAlerts} from './components/WeatherAlerts';
 
 const App = () => {
-  const {weather, alerts, error, loading, refresh} = useWeather();
-  // TODO: show alerts
-  console.info(JSON.stringify(alerts));
+  const {weather, weatherAlerts, error, loading, refresh} = useWeather();
 
   /**
    * Effect to refresh weather data on component mount.
@@ -41,6 +40,9 @@ const App = () => {
         {data ? (
           <>
             <CurrentWeather data={data.current} />
+            {weatherAlerts?.alerts?.length ? (
+              <WeatherAlerts data={weatherAlerts} />
+            ) : null}
             <HourlyWeather data={data.hourly} />
             <DailyWeather data={data.daily} hourlyData={data.hourly} />
           </>

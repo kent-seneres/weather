@@ -3,7 +3,7 @@ import {WeatherData, AlertsData} from './types';
 import oneCallResponse from '../mockData/oneCallResponse.json';
 import alertsResponse from '../mockData/alertsResponse.json';
 
-const USE_DUMMY_DATA = true;
+const USE_DUMMY_DATA = __DEV__ && true;
 
 interface WeatherApiData {
   weather: WeatherData;

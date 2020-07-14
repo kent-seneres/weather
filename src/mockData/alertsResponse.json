@@ -6,22 +6,46 @@
   "alerts": [
     {
       "regions": [
-        "Northern Franklin",
-        " Interior Cumberland Highlands",
-        " Northern Carroll",
-        " Northern Coos",
-        " Southern Oxford",
-        " Southern Coos",
-        " Northern Oxford"
+        "Central Interior Cumberland",
+        " Androscoggin",
+        " Coastal Cumberland",
+        " Sagadahoc"
       ],
-      "expires_utc": "2020-07-14T18:00:00",
-      "effective_local": "2020-07-14T12:59:00",
-      "uri": "https://api.weather.gov/alerts/NWS-IDP-PROD-4328702",
-      "description": "At 859 AM EDT, radar indicated strong thunderstorms were located\nalong a line extending from Berlin to 6 miles west of Waterford to 6\nmiles southwest of Naples. Movement was north at 35 mph.\n\nWinds in excess of 40 mph and nickel size hail are possible with\nthese storms.\n\nLocations impacted include...\nBerlin, Bridgton, Bethel, Rumford, Andover, Errol, Waterford,\nGrafton, Dixville, Weld, Gorham, Harrison, Denmark, Lovell,\nGreenwood, Chatham, Dummer, Hanover, Gilead and Byron.\n\nTorrential rainfall is also occurring with these storms, and may\ncause localized flooding. Do not drive your vehicle through flooded\nroadways.",
-      "effective_utc": "2020-07-14T16:59:00",
+      "expires_utc": "2020-07-14T22:00:00",
+      "effective_local": "2020-07-14T17:18:00",
+      "uri": "https://api.weather.gov/alerts/NWS-IDP-PROD-4328905",
+      "description": "At 118 PM EDT, a strong thunderstorm was located near Falmouth, or\nnear Portland, moving north at 15 mph.\n\nHalf inch hail is possible with this storm.\n\nLocations impacted include...\nPortland, Brunswick, Topsham, Cumberland, Falmouth, Freeport, Gray,\nYarmouth, Harpswell, Durham, Chebeague Island, New Gloucester, Pownal\nand North Yarmouth.\n\nThis includes the following highways...\nInterstate 295 between mile markers 6 and 31.\nInterstate 95 between mile markers 51 and 54.\n\nTorrential rainfall is also occurring with this storm, and may cause\nlocalized flooding. Do not drive your vehicle through flooded\nroadways.",
+      "effective_utc": "2020-07-14T21:18:00",
       "severity": "Watch",
-      "title": "Special Weather Statement issued July 14 at 8:59AM EDT by NWS Gray ME",
-      "expires_local": "2020-07-14T14:00:00"
+      "title": "Special Weather Statement issued July 14 at 1:18PM EDT by NWS Gray ME",
+      "expires_local": "2020-07-14T18:00:00"
+    },
+    {
+      "regions": [
+        "Kennebec, ME",
+        " Cumberland, ME",
+        " Androscoggin, ME",
+        " Sagadahoc, ME"
+      ],
+      "expires_utc": "2020-07-14T23:15:00",
+      "effective_local": "2020-07-14T16:11:00",
+      "uri": "https://api.weather.gov/alerts/NWS-IDP-PROD-4328853-3628439",
+      "description": "The National Weather Service in Gray has issued a\n\n* Flood Advisory for...\nSouthwestern Kennebec County in south central Maine...\nNorthwestern Sagadahoc County in south central Maine...\nAndroscoggin County in southwestern Maine...\nEast Central Cumberland County in southwestern Maine...\n\n* Until 315 PM EDT.\n\n* At 1211 PM EDT, Doppler radar indicated heavy rain due to\nthunderstorms. Minor flooding is ongoing or expected to begin\nshortly in the advisory area.\n\nSome locations that will experience flooding include...\nLewiston, Auburn, Brunswick, Topsham, Turner, Freeport,\nLitchfield, Yarmouth, Lisbon, and Greene.",
+      "effective_utc": "2020-07-14T20:11:00",
+      "severity": "Advisory",
+      "title": "Flood Advisory issued July 14 at 12:11PM EDT until July 14 at 3:15PM EDT by NWS Gray ME",
+      "expires_local": "2020-07-14T19:15:00"
+    },
+    {
+      "regions": ["Oxford, ME", " Cumberland, ME", " Androscoggin, ME"],
+      "expires_utc": "2020-07-14T22:15:00",
+      "effective_local": "2020-07-14T15:13:00",
+      "uri": "https://api.weather.gov/alerts/NWS-IDP-PROD-4328815-3628416",
+      "description": "The National Weather Service in Gray has issued a\n\n* Flood Advisory for...\nSouthwestern Androscoggin County in southwestern Maine...\nCentral Cumberland County in southwestern Maine...\nSoutheastern Oxford County in western Maine...\n\n* Until 215 PM EDT.\n\n* At 1113 AM EDT, Doppler radar indicated heavy rain due to\nthunderstorms. Minor flooding is ongoing or expected to begin\nshortly in the advisory area.\n\nSome locations that will experience flooding include...\nAuburn, Westbrook, Mechanic Falls, Naples, Cumberland, Gorham,\nFalmouth, Gray, Raymond, and Yarmouth.",
+      "effective_utc": "2020-07-14T19:13:00",
+      "severity": "Advisory",
+      "title": "Flood Advisory issued July 14 at 11:13AM EDT until July 14 at 2:15PM EDT by NWS Gray ME",
+      "expires_local": "2020-07-14T18:15:00"
     }
   ],
   "city_name": "Portland",

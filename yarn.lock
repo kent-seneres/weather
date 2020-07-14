@@ -1237,6 +1237,14 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
   integrity sha512-KfRL3PuHmqQLOG+2tGpRO26Ctg+Cq1E01D2DMriKEATHgWLfeNDmq9e29Q9WIky0dQ3NPkd1mzYH8Lm936Z9qw==
 
+"@types/react-native-swiper@^1.5.10":
+  version "1.5.10"
+  resolved "https://registry.yarnpkg.com/@types/react-native-swiper/-/react-native-swiper-1.5.10.tgz#1c7c3c5fe6474f8b352f08ea7c275a55c54c615d"
+  integrity sha512-aaDBsobCO5v2hplagLmCi+3SgBgc+VMcc4XpI5BNAb4gbZgeStEn6/ijeEhwZIZqZDOY2/1DgSRM15pWSZUsrQ==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+
 "@types/react-native-vector-icons@^6.4.5":
   version "6.4.5"
   resolved "https://registry.yarnpkg.com/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.5.tgz#74cbfc564bd8435e43ad6728572a0e5b49c335d1"
@@ -1245,10 +1253,17 @@
     "@types/react" "*"
     "@types/react-native" "*"
 
-"@types/react-native@*", "@types/react-native@^0.62.17":
+"@types/react-native@*":
   version "0.62.17"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.62.17.tgz#78e630692557ae82a106dab7682560a8b541c49a"
   integrity sha512-nkWG9oYS0wNiobzY11GOAjG/spV4vCPIbW+u1QIXx+wnQQ4EhkFz6lqqvncO3puXMzwkRhEGawq/bImMReA/vQ==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-native@^0.63.1":
+  version "0.63.1"
+  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.63.1.tgz#81da30aeaaa034039efd23ccb1c54786b1630966"
+  integrity sha512-mo2DAgliCqdNyivBa0/JL8JIkebt9TU0ATmsvtUvypIP5qN+YJekbVPpHt6WLXEZyBm7LtmIqxbjIHqeoaojsg==
   dependencies:
     "@types/react" "*"
 
@@ -5588,6 +5603,13 @@ react-native-status-bar-height@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/react-native-status-bar-height/-/react-native-status-bar-height-2.5.0.tgz#bc0fb85230603850aab9667ee8111a62954de90c"
   integrity sha512-sYBCPYA/NapBSHkdm/IVL4ID3LLlIuLqINi2FBDyMkc2BU9pfSGOtkz9yfxoK39mYJuTrlTOQ7mManARUsYDSA==
+
+react-native-swiper@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-swiper/-/react-native-swiper-1.6.0.tgz#59fdbdf95addee49630312f27077622c27776819"
+  integrity sha512-OnkTTZi+9uZUgy0uz1I9oYDhCU3z36lZn+LFsk9FXPRelxb/KeABzvPs3r3SrHWy1aA67KGtSFj0xNK2QD0NJQ==
+  dependencies:
+    prop-types "^15.5.10"
 
 react-native-vector-icons@^7.0.0:
   version "7.0.0"

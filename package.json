@@ -15,6 +15,7 @@
     "react-native-config": "^1.2.1",
     "react-native-elements": "^2.0.4",
     "react-native-geolocation-service": "^5.0.0",
+    "react-native-swiper": "^1.6.0",
     "react-native-vector-icons": "^7.0.0",
     "typescript": "^3.9.6"
   },
@@ -23,7 +24,8 @@
     "@babel/runtime": "^7.10.4",
     "@react-native-community/eslint-config": "^2.0.0",
     "@types/react": "^16.9.41",
-    "@types/react-native": "^0.62.17",
+    "@types/react-native": "^0.63.1",
+    "@types/react-native-swiper": "^1.5.10",
     "babel-jest": "^26.1.0",
     "eslint": "^7.4.0",
     "jest": "^26.1.0",

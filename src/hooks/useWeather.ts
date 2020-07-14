@@ -13,7 +13,7 @@ interface WeatherDataState {
   isLoading: boolean;
   location: CurrentLocationData | null;
   weather: WeatherData | null;
-  alerts: AlertsData | null;
+  weatherAlerts: AlertsData | null;
   error: any | null;
 }
 
@@ -21,7 +21,7 @@ const initialState: WeatherDataState = {
   isLoading: false,
   location: null,
   weather: null,
-  alerts: null,
+  weatherAlerts: null,
   error: null,
 };
 
@@ -42,7 +42,7 @@ const weatherReducer: React.Reducer<WeatherDataState, any> = (
         isLoading: false,
         location: action.payload.location,
         weather: action.payload.weather,
-        alerts: action.payload.alerts,
+        weatherAlerts: action.payload.weatherAlerts,
         error: null,
       };
     case Actions.FAIL:
@@ -80,7 +80,7 @@ const useWeather = () => {
           payload: {
             location: location,
             weather: data.weather,
-            alerts: data.alerts,
+            weatherAlerts: data.alerts,
           },
         });
       } catch (error) {
@@ -98,7 +98,7 @@ const useWeather = () => {
   return {
     location: state.location,
     weather: state.weather,
-    alerts: state.alerts,
+    weatherAlerts: state.weatherAlerts,
     error: state.error,
     loading: state.isLoading,
     refresh,
