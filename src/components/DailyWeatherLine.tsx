@@ -14,7 +14,7 @@ export interface DailyWeatherLineProps {
   onPress: () => void;
 }
 
-const TIME_WIDTH_PERCENT = 0.13;
+const TIME_WIDTH_PERCENT = 0.14;
 const ICON_WIDTH_PERCENT = 0.1;
 const MAX_WIDTH = 1 - TIME_WIDTH_PERCENT - ICON_WIDTH_PERCENT;
 const MAX_LINE_WIDTH = MAX_WIDTH - 0.06;
