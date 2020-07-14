@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import {Text} from 'react-native-elements';
-import {CurrentWeatherData} from '../types';
+import {CurrentWeatherData} from '../core/types';
 import getTimeString from '../helpers/getTimeString';
 import getIcon from '../helpers/getIcon';
 

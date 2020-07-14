@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from 'react-native-elements';
-import {DailyWeatherData, HourlyWeatherData} from '../types';
+import {DailyWeatherData, HourlyWeatherData} from '../core/types';
 import {DailyWeatherLine} from './DailyWeatherLine';
 import {HourlyWeather} from './HourlyWeather';
 import getTimeString from '../helpers/getTimeString';

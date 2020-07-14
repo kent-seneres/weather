@@ -4,82 +4,71 @@ import {
   ScrollView,
   RefreshControl,
   StyleSheet,
+  ActivityIndicator,
+  View,
 } from 'react-native';
-import useCurrentLocation from './hooks/useCurrentLocation';
-import useWeatherApi from './hooks/useWeatherApi';
+import {Text} from 'react-native-elements';
 import {CurrentWeather} from './components/CurrentWeather';
-import {WeatherData} from './types';
+import {WeatherData} from './core/types';
 import {HourlyWeather} from './components/HourlyWeather';
 import {DailyWeather} from './components/DailyWeather';
+import useWeather from './hooks/useWeather';
 
 const App = () => {
-  const {currentLocationState, getLocation} = useCurrentLocation();
-  const {weatherApiState, getWeather} = useWeatherApi();
-
-  const [refreshing, setRefreshing] = React.useState(false);
+  const {weather, alerts, error, loading, refresh} = useWeather();
+  // TODO: show alerts
+  console.info(JSON.stringify(alerts));
 
   /**
-   * Effect to fetch current location on component mount.
+   * Effect to refresh weather data on component mount.
    */
   React.useEffect(() => {
-    getLocation();
+    refresh();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  /**
-   * Effect to fetch weather data for current location when location changes.
-   */
-  React.useEffect(() => {
-    if (!currentLocationState.data) {
-      return;
-    }
-
-    console.log(`Location: ${JSON.stringify(currentLocationState.data)}`);
-    getWeather(currentLocationState.data.lat, currentLocationState.data.lon);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentLocationState.data]);
-
-  /**
-   * Update current location and fetch coresponding weather data.
-   */
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    getLocation();
-  }, [getLocation]);
-
-  /**
-   * Effect to disable refreshing flag once location and weather is done loading.
-   */
-  React.useEffect(() => {
-    if (currentLocationState.isLoading || weatherApiState.isLoading) {
-      return;
-    }
-
-    setRefreshing(false);
-  }, [currentLocationState.isLoading, weatherApiState.isLoading]);
 
   const renderWeatherData = (data: WeatherData) => {
     return (
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl
+            colors={[ACTIVITY_INDICATOR_COLOR]}
+            refreshing={loading}
+            onRefresh={refresh}
+          />
         }>
-        {weatherApiState.data ? (
+        {data ? (
           <>
             <CurrentWeather data={data.current} />
             <HourlyWeather data={data.hourly} />
             <DailyWeather data={data.daily} hourlyData={data.hourly} />
           </>
-        ) : null}
+        ) : (
+          <Text style={styles.detailText}>No data available.</Text>
+        )}
       </ScrollView>
+    );
+  };
+
+  const renderDetails = () => {
+    return (
+      <View style={styles.detailContainer}>
+        {loading ? (
+          <ActivityIndicator size="large" color={ACTIVITY_INDICATOR_COLOR} />
+        ) : error ? (
+          <Text style={styles.detailText}>{error}</Text>
+        ) : (
+          <Text style={styles.detailText}>No data available.</Text>
+        )}
+      </View>
     );
   };
 
   return (
     <>
       <SafeAreaView style={styles.container}>
-        {renderWeatherData(weatherApiState.data)}
+        {weather ? renderWeatherData(weather) : renderDetails()}
       </SafeAreaView>
     </>
   );
@@ -87,8 +76,17 @@ const App = () => {
 
 export default App;
 
+const ACTIVITY_INDICATOR_COLOR = '#5fa0ea';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  detailContainer: {
+    alignItems: 'center',
+    padding: 16,
+  },
+  detailText: {
+    textAlign: 'center',
   },
 });

@@ -1,4 +1,4 @@
-import {Weather} from '../types';
+import {Weather} from '../core/types';
 
 /**
  * Get weather condition description from the code.

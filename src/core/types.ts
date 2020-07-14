@@ -1,3 +1,7 @@
+/**
+ * openweathermap One Call API
+ * See: https://openweathermap.org/api/one-call-api
+ */
 export interface WeatherData {
   lat: number;
   lon: number;
@@ -6,7 +10,7 @@ export interface WeatherData {
   daily: DailyWeatherData[];
 }
 
-export interface HourlyWeatherData extends WeatherData {
+export interface HourlyWeatherData {
   dt: number;
   temp: number;
   feels_like: number;
@@ -14,8 +18,8 @@ export interface HourlyWeatherData extends WeatherData {
   clouds: number;
   wind_speed: number;
   weather: Weather[];
-  rain: Precipitation;
-  snow: Precipitation;
+  rain?: Precipitation;
+  snow?: Precipitation;
 }
 
 export interface CurrentWeatherData extends HourlyWeatherData {
@@ -33,8 +37,8 @@ export interface DailyWeatherData {
   clouds: number;
   wind_speed: number;
   weather: Weather[];
-  rain: number;
-  snow: number;
+  rain?: number;
+  snow?: number;
 }
 
 export interface Weather {
@@ -58,3 +62,22 @@ export interface DailyTemperature {
 }
 
 export interface DailyFeelsLike extends Omit<DailyTemperature, 'min' | 'max'> {}
+
+/**
+ * weatherbit.io Alerts API
+ * See: https://www.weatherbit.io/api/swaggerui/weather-api-v2#!/Alerts/
+ */
+export interface AlertsData {
+  lat: number;
+  lon: number;
+  alerts: WeatherAlertGroup[];
+}
+
+export interface WeatherAlertGroup {
+  title: string;
+  description: string;
+  severity: string;
+  effective_utc: string;
+  expires_utc: string;
+  alerts: string[];
+}

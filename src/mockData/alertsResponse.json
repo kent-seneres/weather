@@ -1,0 +1,29 @@
+{
+  "country_code": "US",
+  "lon": -70.29,
+  "timezone": "America/New_York",
+  "lat": 43.67,
+  "alerts": [
+    {
+      "regions": [
+        "Northern Franklin",
+        " Interior Cumberland Highlands",
+        " Northern Carroll",
+        " Northern Coos",
+        " Southern Oxford",
+        " Southern Coos",
+        " Northern Oxford"
+      ],
+      "expires_utc": "2020-07-14T18:00:00",
+      "effective_local": "2020-07-14T12:59:00",
+      "uri": "https://api.weather.gov/alerts/NWS-IDP-PROD-4328702",
+      "description": "At 859 AM EDT, radar indicated strong thunderstorms were located\nalong a line extending from Berlin to 6 miles west of Waterford to 6\nmiles southwest of Naples. Movement was north at 35 mph.\n\nWinds in excess of 40 mph and nickel size hail are possible with\nthese storms.\n\nLocations impacted include...\nBerlin, Bridgton, Bethel, Rumford, Andover, Errol, Waterford,\nGrafton, Dixville, Weld, Gorham, Harrison, Denmark, Lovell,\nGreenwood, Chatham, Dummer, Hanover, Gilead and Byron.\n\nTorrential rainfall is also occurring with these storms, and may\ncause localized flooding. Do not drive your vehicle through flooded\nroadways.",
+      "effective_utc": "2020-07-14T16:59:00",
+      "severity": "Watch",
+      "title": "Special Weather Statement issued July 14 at 8:59AM EDT by NWS Gray ME",
+      "expires_local": "2020-07-14T14:00:00"
+    }
+  ],
+  "city_name": "Portland",
+  "state_code": "ME"
+}
