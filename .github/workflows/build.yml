@@ -44,7 +44,7 @@ jobs:
 
       - name: Build Android APK
         run: |
-          cd android && chmod +x ./gradlew && ./gradlew assembleRelease assembleAndroidTest --no-daemon
+          cd android && chmod +x ./gradlew && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release --no-daemon
 
       - name: Run e2e tests
         uses: reactivecircus/android-emulator-runner@v2
