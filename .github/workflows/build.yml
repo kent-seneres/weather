@@ -44,4 +44,4 @@ jobs:
 
       - name: Build Android APK
         run: |
-          cd android && chmod +x ./gradlew && ./gradlew assembleRelease --no-daemon
+          cd android && chmod +x ./gradlew && ./gradlew assembleRelease assembleAndroidTest --no-daemon

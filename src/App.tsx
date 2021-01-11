@@ -69,7 +69,7 @@ const App = () => {
 
   return (
     <>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView testID="mainScreen" style={styles.container}>
         {weather ? renderWeatherData(weather) : renderDetails()}
       </SafeAreaView>
     </>
