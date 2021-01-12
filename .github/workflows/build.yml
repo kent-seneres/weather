@@ -57,3 +57,9 @@ jobs:
           api-level: 29
           avd-name: "Pixel_2_API_29"
           script: yarn test-e2e
+
+      - name: Archive APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-apk
+          path: android/app/build/outputs/apk/release/app-release.apk
