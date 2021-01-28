@@ -68,7 +68,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: android/app/build/outputs/apk
-          key: output-apks-${{ hashFiles('android/app/build/outputs/apk') }}
+          key: output-apks-${{ hashFiles('package.json') }}
 
   test:
     name: Run Tests
@@ -92,7 +92,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: android/app/build/outputs/apk
-          key: output-apks-${{ hashFiles('android/app/build/outputs/apk') }}
+          key: output-apks-${{ hashFiles('package.json') }}
 
       - name: Run e2e tests
         if: steps.apk_cache.outputs.cache-hit == 'true'
