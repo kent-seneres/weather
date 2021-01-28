@@ -4,29 +4,30 @@ on:
   # Trigger the workflow on push or pull request,
   # but only for the main branch
   push:
-    branches:
-      - master
+    # branches:
+    #   - master
   pull_request:
     branches:
       - master
 
   # Also trigger on release created events
   release:
-    types: 
+    types:
       - created
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
-  build: 
+  build:
     name: Build
-    runs-on: macOS-latest
-    
+    runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@master
 
+      # set up environment variables required for the build
       - name: Set environment variables
         run: |
           echo "OWM_APP_ID=${{ secrets.OWM_APP_ID }}" >> .env
@@ -62,15 +63,39 @@ jobs:
         run: |
           cd android && chmod +x ./gradlew && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release --no-daemon
 
+      # upload the APKs to be used in the detox e2e test
+      - name: Upload APK
+        uses: actions/upload-artifacts@v2
+        with:
+          name: apks
+          path: android/app/build/outputs/apk
+
+  test:
+    name: Run Tests
+    needs: build
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@master
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Download APKs
+        uses: actions/download-artifact@v2
+        with:
+          name: apks
+          path: android/app/build/outputs/apk
+
       - name: Run e2e tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          avd-name: "Pixel_2_API_29"
+          avd-name: 'Pixel_2_API_29'
           script: yarn test-e2e
-
-      - name: Archive APK
-        uses: actions/upload-artifact@v2
-        with:
-          name: release-apk
-          path: android/app/build/outputs/apk/release/app-release.apk
