@@ -63,12 +63,12 @@ jobs:
         run: |
           cd android && chmod +x ./gradlew && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release --no-daemon
 
-      # upload the APKs to be used in the detox e2e test
-      - name: Upload APK
-        uses: actions/upload-artifact@v2
+      # cache the APKs to be used in the detox e2e test
+      - name: Cache APKs
+        uses: actions/cache@v2
         with:
-          name: apks
           path: android/app/build/outputs/apk
+          key: output-apks-${{ hashFiles('android/app/build/outputs/apk') }}
 
   test:
     name: Run Tests
@@ -87,13 +87,15 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Download APKs
-        uses: actions/download-artifact@v2
+      - name: Cache APKs
+        id: apk_cache
+        uses: actions/cache@v2
         with:
-          name: apks
           path: android/app/build/outputs/apk
+          key: output-apks-${{ hashFiles('android/app/build/outputs/apk') }}
 
       - name: Run e2e tests
+        if: steps.apk_cache.outputs.cache-hit == 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
