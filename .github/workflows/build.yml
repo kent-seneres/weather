@@ -100,4 +100,5 @@ jobs:
         with:
           api-level: 29
           avd-name: 'Pixel_2_API_29'
+          profile: Pixel 3a
           script: yarn test-e2e
