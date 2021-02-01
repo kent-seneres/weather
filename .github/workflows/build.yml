@@ -94,11 +94,14 @@ jobs:
           path: android/app/build/outputs/apk
           key: output-apks-${{ hashFiles('package.json') }}
 
+      - name: List hardware profiles
+        run: avdmanager list
+
       - name: Run e2e tests
         if: steps.apk_cache.outputs.cache-hit == 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
           avd-name: 'Pixel_2_API_29'
-          profile: Pixel 3a
+          profile: 'Pixel 3'
           script: yarn test-e2e
