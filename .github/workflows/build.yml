@@ -95,7 +95,8 @@ jobs:
           key: output-apks-${{ hashFiles('package.json') }}
 
       - name: List hardware profiles
-        run: avdmanager list
+        continue-on-error: true
+        run: ~/Android/Sdk/tools/bin/avdmanager list
 
       - name: Run e2e tests
         if: steps.apk_cache.outputs.cache-hit == 'true'
@@ -103,5 +104,5 @@ jobs:
         with:
           api-level: 29
           avd-name: 'Pixel_2_API_29'
-          profile: 'Pixel 3'
+          profile: 'pixel'
           script: yarn test-e2e
