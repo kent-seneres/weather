@@ -72,8 +72,13 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
   /**
    * Get the relative percentage of the value compared to the entire data set.
    */
-  const getValueRelativePercent = (value: number): number =>
-    (value - min) / (max - min);
+  const getValueRelativePercent = (value: number): number => {
+    if (max === min) {
+      return 1;
+    }
+
+    return (value - min) / (max - min);
+  };
 
   return (
     <View style={styles.container}>

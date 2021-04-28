@@ -37,11 +37,10 @@ export const HourlyWeatherLine: React.FC<HourlyWeatherLineProps> = ({
   unit,
   onPress,
 }) => {
-  const colorBlockStyle = roundedTop
-    ? styles.roundedTop
-    : roundedBottom
-    ? styles.roundedBottom
-    : {};
+  const colorBlockStyle = {
+    ...(roundedTop ? styles.roundedTop : {}),
+    ...(roundedBottom ? styles.roundedBottom : {}),
+  };
 
   const width = MIN_WIDTH + offsetPercent * (MAX_WIDTH - MIN_WIDTH);
   const widthPercent = `${width * 100}%`;
