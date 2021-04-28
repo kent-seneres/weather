@@ -71,7 +71,12 @@ const useWeather = () => {
 
     const getData = async () => {
       try {
-        const location = await getLocation();
+        // const location = await getLocation();
+        const location: CurrentLocationData = {
+          timestamp: Date.now(),
+          lat: 43.1,
+          lon: -70.1,
+        };
         console.info(`Location: ${JSON.stringify(location)}`);
 
         const data = await fetchWeatherData(location.lat, location.lon);

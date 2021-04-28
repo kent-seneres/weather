@@ -54,7 +54,7 @@ export const DailyWeather: React.FC<DailyWeatherProps> = ({
     });
 
     return (
-      <>
+      <View style={styles.detailContainer}>
         {availableHourlyData.length === 0 ? (
           <Text style={styles.detailText}>No hourly data available.</Text>
         ) : (
@@ -65,7 +65,7 @@ export const DailyWeather: React.FC<DailyWeatherProps> = ({
           {'; '}
           Sunset {getTimeString(dailyData.sunset)}
         </Text>
-      </>
+      </View>
     );
   };
 
@@ -85,6 +85,7 @@ export const DailyWeather: React.FC<DailyWeatherProps> = ({
             <DailyWeatherLine
               timestamp={dailyData.dt}
               iconId={weatherDetail?.icon}
+              pop={dailyData.pop}
               minValue={`${minValue}°`}
               maxValue={`${maxValue}°`}
               widthPercent={width}
@@ -109,8 +110,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'stretch',
   },
+  detailContainer: {
+    paddingVertical: 4,
+  },
   detailText: {
     textAlign: 'center',
-    marginBottom: 8,
+    marginBottom: 4,
   },
 });

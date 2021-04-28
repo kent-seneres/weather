@@ -20,9 +20,11 @@ export interface HourlyWeatherData {
   weather: Weather[];
   rain?: Precipitation;
   snow?: Precipitation;
+  uvi: number;
+  pop: number;
 }
 
-export interface CurrentWeatherData extends HourlyWeatherData {
+export interface CurrentWeatherData extends Omit<HourlyWeatherData, 'pop'> {
   sunset: number;
   sunrise: number;
 }
@@ -39,6 +41,8 @@ export interface DailyWeatherData {
   weather: Weather[];
   rain?: number;
   snow?: number;
+  uvi: number;
+  pop: number;
 }
 
 export interface Weather {
