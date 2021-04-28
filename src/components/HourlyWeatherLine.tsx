@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
   time: {
     width: `${TIME_WIDTH_PERCENT * 100}%`,
     textAlign: 'right',
+    fontWeight: 'bold',
   },
   valueLine: {
     flexDirection: 'row',
@@ -130,5 +131,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#d9d7dc',
+    fontWeight: 'bold',
   },
 });
