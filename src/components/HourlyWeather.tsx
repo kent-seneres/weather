@@ -8,10 +8,12 @@ import {HourlyWeatherLine} from './HourlyWeatherLine';
 
 enum DataChoice {
   TEMPERATURE,
+  FEELS_LIKE,
   PRECIPITATION_PROBABILITY,
   WIND_SPEED,
   CLOUDS,
   HUMIDITY,
+  UVI,
 }
 
 const getValue = (dataChoice: DataChoice, data: HourlyWeatherData) => {
@@ -19,6 +21,9 @@ const getValue = (dataChoice: DataChoice, data: HourlyWeatherData) => {
   switch (dataChoice) {
     case DataChoice.TEMPERATURE:
       value = data.temp;
+      break;
+    case DataChoice.FEELS_LIKE:
+      value = data.feels_like;
       break;
     case DataChoice.WIND_SPEED:
       value = data.wind_speed;
@@ -32,6 +37,9 @@ const getValue = (dataChoice: DataChoice, data: HourlyWeatherData) => {
     case DataChoice.PRECIPITATION_PROBABILITY:
       value = data.pop * 100;
       break;
+    case DataChoice.UVI:
+      value = data.uvi;
+      break;
   }
 
   return Math.round(value);
@@ -40,6 +48,7 @@ const getValue = (dataChoice: DataChoice, data: HourlyWeatherData) => {
 const getUnits = (dataChoice: DataChoice) => {
   switch (dataChoice) {
     case DataChoice.TEMPERATURE:
+    case DataChoice.FEELS_LIKE:
       return '°';
     case DataChoice.WIND_SPEED:
       return ' mph';
@@ -47,6 +56,8 @@ const getUnits = (dataChoice: DataChoice) => {
     case DataChoice.HUMIDITY:
     case DataChoice.PRECIPITATION_PROBABILITY:
       return ' %';
+    default:
+      return '';
   }
 };
 
@@ -133,12 +144,14 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
         <ButtonGroup
           buttons={[
             `Temp (F${getUnits(DataChoice.TEMPERATURE)})`,
+            `Feels-Like (F${getUnits(DataChoice.FEELS_LIKE)})`,
             `Precip Prob (${getUnits(
               DataChoice.PRECIPITATION_PROBABILITY,
             ).trim()})`,
             `Wind (${getUnits(DataChoice.WIND_SPEED).trim()})`,
             `Clouds (${getUnits(DataChoice.CLOUDS).trim()})`,
             `Humidity (${getUnits(DataChoice.HUMIDITY).trim()})`,
+            `UV Index`,
           ]}
           buttonStyle={styles.buttonGroupButton}
           textStyle={styles.buttonGroupText}
