@@ -15,19 +15,22 @@ const SHOW_TIMESTAMP_DURATION_MS = 3000;
  * Component that shows the current weather data.
  */
 export const CurrentWeather: React.FC<CurrentWeatherProps> = ({data}) => {
-  const [timer, setTimer] = React.useState<NodeJS.Timer>(null);
   const [showTimestamp, setShowTimestamp] = React.useState<boolean>(true);
 
+  /**
+   * Effect to show the timestamp and automatically dismiss it after a few seconds.
+   */
   React.useEffect(() => {
-    if (timer) {
-      clearTimeout(timer);
-    }
-
     setShowTimestamp(true);
+
     const timeoutId = setTimeout(() => {
       setShowTimestamp(false);
     }, SHOW_TIMESTAMP_DURATION_MS);
-    setTimer(timeoutId);
+
+    // clear the timeout if timestamp changes
+    return () => {
+      clearTimeout(timeoutId);
+    };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.dt]);
