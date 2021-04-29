@@ -7,6 +7,7 @@ import getIcon from '../helpers/getIcon';
 
 export interface CurrentWeatherProps {
   data: CurrentWeatherData;
+  locationString: string;
 }
 
 const SHOW_TIMESTAMP_DURATION_MS = 3000;
@@ -14,7 +15,10 @@ const SHOW_TIMESTAMP_DURATION_MS = 3000;
 /**
  * Component that shows the current weather data.
  */
-export const CurrentWeather: React.FC<CurrentWeatherProps> = ({data}) => {
+export const CurrentWeather: React.FC<CurrentWeatherProps> = ({
+  data,
+  locationString,
+}) => {
   const [showTimestamp, setShowTimestamp] = React.useState<boolean>(true);
 
   /**
@@ -36,9 +40,12 @@ export const CurrentWeather: React.FC<CurrentWeatherProps> = ({data}) => {
   return (
     <View style={styles.container}>
       {showTimestamp ? (
-        <Text style={styles.timestamp}>
-          Updated: {new Date(data.dt * 1000).toLocaleString()}
-        </Text>
+        <>
+          <Text style={styles.timestamp}>
+            Updated: {new Date(data.dt * 1000).toLocaleString()}
+          </Text>
+          <Text style={styles.placeText}>{locationString}</Text>
+        </>
       ) : null}
       <View style={styles.currentContainer}>
         <Image style={styles.icon} source={getIcon(data.weather[0].icon)} />
@@ -84,5 +91,9 @@ const styles = StyleSheet.create({
   detailText: {
     textAlign: 'center',
     marginBottom: 12,
+  },
+  placeText: {
+    padding: 2,
+    fontWeight: 'bold',
   },
 });

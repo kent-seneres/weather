@@ -85,3 +85,42 @@ export interface WeatherAlertGroup {
   expires_utc: string;
   alerts?: string[];
 }
+
+interface HereAddress {
+  label: string;
+  countryCode: string;
+  countryName: string;
+  state: string;
+  county: string;
+  city: string;
+  district: string;
+  street: string;
+  postalCode: string;
+  houseNumber: string;
+}
+
+interface HereReverseGeocodeItem {
+  resultType:
+    | 'place'
+    | 'locality'
+    | 'street'
+    | 'houseNumber'
+    | 'administrativeArea'
+    | 'addressBlock'
+    | 'intersection'
+    | 'postalCodePoint'
+    | 'chainQuery'
+    | 'categoryQuery';
+
+  id: string;
+  title: string;
+  address: HereAddress;
+  position: {
+    lat: string;
+    lng: string;
+  };
+}
+
+export interface HereReverseGeocode {
+  items: HereReverseGeocodeItem[];
+}

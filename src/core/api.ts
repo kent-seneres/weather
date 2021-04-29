@@ -1,5 +1,5 @@
 import Config from 'react-native-config';
-import {WeatherData, AlertsData} from './types';
+import {WeatherData, AlertsData, HereReverseGeocode} from './types';
 import oneCallResponse from '../mockData/oneCallResponse.json';
 import alertsResponse from '../mockData/alertsResponse.json';
 import {USE_MOCK_WEATHER_DATA} from './constants';
@@ -70,4 +70,28 @@ const fetchWeatherData = async (
   );
 };
 
-export default fetchWeatherData;
+/**
+ * Builds the request url for the HERE reverse geocode call
+ * See: https://developer.here.com/documentation/geocoding-search-api/dev_guide/topics/endpoint-reverse-geocode-brief.html
+ */
+const buildHereRequestUrl = (lat: number, lon: number): string => {
+  const URL = 'https://revgeocode.search.hereapi.com/v1/revgeocode';
+  const at = `${lat}%2C${lon}`;
+  const lang = 'en-US';
+  const apiKey = Config.HERE_API_KEY;
+  return `${URL}?at=${at}&lang=${lang}&apiKey=${apiKey}`;
+};
+
+const fetchGeoCode = async (
+  lat: number,
+  lon: number,
+): Promise<HereReverseGeocode> => {
+  try {
+    const response = await fetch(buildHereRequestUrl(lat, lon));
+    return response.ok ? response.json() : null;
+  } catch (error) {
+    return null;
+  }
+};
+
+export {fetchWeatherData, fetchGeoCode};

@@ -16,9 +16,11 @@ import {HourlyWeather} from './components/HourlyWeather';
 import {DailyWeather} from './components/DailyWeather';
 import useWeather from './hooks/useWeather';
 import {WeatherAlerts} from './components/WeatherAlerts';
+import {fetchGeoCode} from './core/api';
 
 const App = () => {
   const {weather, weatherAlerts, error, loading, refresh} = useWeather();
+  const [locationString, setLocationString] = React.useState<string>();
 
   /**
    * Effect to refresh weather data on component mount.
@@ -27,6 +29,40 @@ const App = () => {
     refresh();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  /**
+   * Effect to fetch the address of the current coordinates using reverse geocoding
+   */
+  React.useEffect(() => {
+    if (!weather?.lat || !weather?.lon) {
+      return;
+    }
+
+    let isCancelled = false;
+    const fetch = async () => {
+      const reverseGeocodeResponse = await fetchGeoCode(
+        weather.lat,
+        weather.lon,
+      );
+
+      if (!isCancelled) {
+        if (reverseGeocodeResponse.items.length > 0) {
+          // just use first result
+          const result = reverseGeocodeResponse.items[0];
+
+          // build very simplified place string from address details
+          const place = `${result.address.city}, ${result.address.state}`;
+          setLocationString(place);
+        }
+      }
+    };
+
+    fetch();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [weather?.lat, weather?.lon]);
 
   /**
    * Open weather.com in browser for convenient alternate weather data source
@@ -56,7 +92,10 @@ const App = () => {
             <TouchableWithoutFeedback
               onLongPress={() => openWeather(weather.lat, weather.lon)}>
               <View>
-                <CurrentWeather data={data.current} />
+                <CurrentWeather
+                  data={data.current}
+                  locationString={locationString}
+                />
               </View>
             </TouchableWithoutFeedback>
             {weatherAlerts?.alerts?.length ? (
