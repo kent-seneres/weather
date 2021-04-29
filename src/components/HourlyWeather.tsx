@@ -35,7 +35,7 @@ const getValue = (dataChoice: DataChoice, data: HourlyWeatherData) => {
       value = data.humidity;
       break;
     case DataChoice.PRECIPITATION_PROBABILITY:
-      value = Math.round(data.pop * 100);
+      value = data.pop * 100;
       break;
     case DataChoice.UVI:
       value = data.uvi;
@@ -82,9 +82,7 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
     DataChoice.TEMPERATURE,
   );
 
-  const values = dataToDisplay.map((data) =>
-    Math.round(getValue(dataChoice, data)),
-  );
+  const values = dataToDisplay.map((data) => getValue(dataChoice, data));
   const min = Math.min(...values);
   const max = Math.max(...values);
 
