@@ -2,8 +2,7 @@ import Config from 'react-native-config';
 import {WeatherData, AlertsData} from './types';
 import oneCallResponse from '../mockData/oneCallResponse.json';
 import alertsResponse from '../mockData/alertsResponse.json';
-
-const USE_DUMMY_DATA = __DEV__ && true;
+import {USE_MOCK_WEATHER_DATA} from './constants';
 
 interface WeatherApiData {
   weather: WeatherData;
@@ -32,7 +31,7 @@ const buildAlertsRequestUrl = (lat: number, lon: number): string => {
 
 const fetchData = async (lat: number, lon: number): Promise<WeatherData> => {
   // return dummy data for testing, since API requests are limited to 1000 per day
-  if (USE_DUMMY_DATA) {
+  if (USE_MOCK_WEATHER_DATA) {
     return oneCallResponse as WeatherData;
   }
 
@@ -41,7 +40,7 @@ const fetchData = async (lat: number, lon: number): Promise<WeatherData> => {
 };
 
 const fetchAlerts = async (lat: number, lon: number): Promise<AlertsData> => {
-  if (USE_DUMMY_DATA) {
+  if (USE_MOCK_WEATHER_DATA) {
     return alertsResponse as AlertsData;
   }
 

@@ -1,5 +1,6 @@
 import {PermissionsAndroid} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
+import {USE_MOCK_LOCATION} from './constants';
 
 export interface CurrentLocationData {
   timestamp: number;
@@ -32,6 +33,14 @@ const getLocation = async (): Promise<CurrentLocationData> => {
   }
 
   return new Promise((resolve, reject) => {
+    if (USE_MOCK_LOCATION) {
+      resolve({
+        timestamp: Date.now(),
+        lat: 43.1,
+        lon: -70.1,
+      });
+    }
+
     Geolocation.getCurrentPosition(
       (position) => {
         resolve({

@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
-import {Button, ButtonGroup} from 'react-native-elements';
+import {ButtonGroup} from 'react-native-elements';
 import {HourlyWeatherData} from '../core/types';
 import getWeatherDescription from '../helpers/getWeatherDescription';
 import getWeatherColor from '../helpers/getWeatherColor';
@@ -151,7 +151,7 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
             `Wind (${getUnits(DataChoice.WIND_SPEED).trim()})`,
             `Clouds (${getUnits(DataChoice.CLOUDS).trim()})`,
             `Humidity (${getUnits(DataChoice.HUMIDITY).trim()})`,
-            `UV Index`,
+            'UV Index',
           ]}
           buttonStyle={styles.buttonGroupButton}
           textStyle={styles.buttonGroupText}
