@@ -175,6 +175,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingHorizontal: 10,
     backgroundColor: '#f3f0f6',
+    paddingTop: 2,
+    paddingBottom: 3,
   },
   buttonGroupText: {
     fontSize: 14,

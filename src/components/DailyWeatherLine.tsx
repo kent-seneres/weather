@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   pop: {
-    fontSize: 10,
+    fontSize: 11,
     paddingStart: 2,
     color: PRECIP_COLOR,
     fontWeight: 'bold',
