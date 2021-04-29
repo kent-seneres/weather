@@ -35,7 +35,7 @@ const getValue = (dataChoice: DataChoice, data: HourlyWeatherData) => {
       value = data.humidity;
       break;
     case DataChoice.PRECIPITATION_PROBABILITY:
-      value = data.pop * 100;
+      value = Math.round(data.pop * 100);
       break;
     case DataChoice.UVI:
       value = data.uvi;

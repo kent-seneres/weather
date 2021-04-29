@@ -41,7 +41,7 @@ export const DailyWeatherLine: React.FC<DailyWeatherLineProps> = ({
   const width = `${widthPercent * MAX_LINE_WIDTH * 100}%`;
 
   const formatPrecipitationPercent = (p: number): string => {
-    return `${p * 100}%`;
+    return `${Math.round(p * 100)}%`;
   };
 
   return (
