@@ -6,6 +6,8 @@ import {
   StyleSheet,
   ActivityIndicator,
   View,
+  Linking,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {Text} from 'react-native-elements';
 import {CurrentWeather} from './components/CurrentWeather';
@@ -26,6 +28,18 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /**
+   * Open weather.com in browser for convenient alternate weather data source
+   */
+  const openWeather = async (lat: number, lon: number) => {
+    const url = `https://weather.com/weather/today/l/${lat},${lon}`;
+
+    const supported = await Linking.canOpenURL(url);
+    if (supported) {
+      await Linking.openURL(url);
+    }
+  };
+
   const renderWeatherData = (data: WeatherData) => {
     return (
       <ScrollView
@@ -39,7 +53,12 @@ const App = () => {
         }>
         {data ? (
           <>
-            <CurrentWeather data={data.current} />
+            <TouchableWithoutFeedback
+              onLongPress={() => openWeather(weather.lat, weather.lon)}>
+              <View>
+                <CurrentWeather data={data.current} />
+              </View>
+            </TouchableWithoutFeedback>
             {weatherAlerts?.alerts?.length ? (
               <WeatherAlerts data={weatherAlerts} />
             ) : null}

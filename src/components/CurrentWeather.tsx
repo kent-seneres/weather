@@ -31,8 +31,6 @@ export const CurrentWeather: React.FC<CurrentWeatherProps> = ({data}) => {
     return () => {
       clearTimeout(timeoutId);
     };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.dt]);
 
   return (

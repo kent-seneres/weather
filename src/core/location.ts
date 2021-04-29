@@ -36,8 +36,8 @@ const getLocation = async (): Promise<CurrentLocationData> => {
     if (USE_MOCK_LOCATION) {
       resolve({
         timestamp: Date.now(),
-        lat: 43.1,
-        lon: -70.1,
+        lat: 43.671305,
+        lon: -70.2930177,
       });
     }
 
