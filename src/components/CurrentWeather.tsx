@@ -1,16 +1,16 @@
 import React from 'react';
-import {View, StyleSheet, Image} from 'react-native';
+import {View, StyleSheet, Image, TouchableNativeFeedback} from 'react-native';
 import {Text} from 'react-native-elements';
 import {CurrentWeatherData} from '../core/types';
 import getTimeString from '../helpers/getTimeString';
 import getIcon from '../helpers/getIcon';
+import {SHOW_DETAILS_DURATION_MS} from '../core/constants';
 
 export interface CurrentWeatherProps {
   data: CurrentWeatherData;
   locationString: string;
+  onLongPress: () => void;
 }
-
-const SHOW_TIMESTAMP_DURATION_MS = 3000;
 
 /**
  * Component that shows the current weather data.
@@ -18,18 +18,20 @@ const SHOW_TIMESTAMP_DURATION_MS = 3000;
 export const CurrentWeather: React.FC<CurrentWeatherProps> = ({
   data,
   locationString,
+  onLongPress,
 }) => {
-  const [showTimestamp, setShowTimestamp] = React.useState<boolean>(true);
+  const [showDetails, setShowDetails] = React.useState<boolean>(true);
 
   /**
-   * Effect to show the timestamp and automatically dismiss it after a few seconds.
+   * Effect to show the auxiliary weather details and
+   * automatically dismiss it after a few seconds.
    */
   React.useEffect(() => {
-    setShowTimestamp(true);
+    setShowDetails(true);
 
     const timeoutId = setTimeout(() => {
-      setShowTimestamp(false);
-    }, SHOW_TIMESTAMP_DURATION_MS);
+      setShowDetails(false);
+    }, SHOW_DETAILS_DURATION_MS);
 
     // clear the timeout if timestamp changes
     return () => {
@@ -38,28 +40,32 @@ export const CurrentWeather: React.FC<CurrentWeatherProps> = ({
   }, [data.dt]);
 
   return (
-    <View style={styles.container}>
-      {showTimestamp ? (
-        <>
-          <Text style={styles.timestamp}>
-            Updated: {new Date(data.dt * 1000).toLocaleString()}
-          </Text>
-          <Text style={styles.placeText}>{locationString}</Text>
-        </>
-      ) : null}
-      <View style={styles.currentContainer}>
-        <Image style={styles.icon} source={getIcon(data.weather[0].icon)} />
-        <View style={styles.temperatureContainer}>
-          <Text h2>{Math.round(data.temp)}°</Text>
-          <Text>Feels {Math.round(data.feels_like)}°</Text>
+    <TouchableNativeFeedback
+      onPress={() => setShowDetails((v) => !v)}
+      onLongPress={onLongPress}>
+      <View style={styles.container}>
+        {showDetails ? (
+          <>
+            <Text style={styles.timestamp}>
+              Updated: {new Date(data.dt * 1000).toLocaleString()}
+            </Text>
+            <Text style={styles.placeText}>{locationString}</Text>
+          </>
+        ) : null}
+        <View style={styles.currentContainer}>
+          <Image style={styles.icon} source={getIcon(data.weather[0].icon)} />
+          <View style={styles.temperatureContainer}>
+            <Text h2>{Math.round(data.temp)}°</Text>
+            <Text>Feels {Math.round(data.feels_like)}°</Text>
+          </View>
         </View>
+        <Text>
+          Sunrise {getTimeString(data.sunrise)}
+          {'; '}
+          Sunset {getTimeString(data.sunset)}
+        </Text>
       </View>
-      <Text style={styles.detailText}>
-        Sunrise {getTimeString(data.sunrise)}
-        {'; '}
-        Sunset {getTimeString(data.sunset)}
-      </Text>
-    </View>
+    </TouchableNativeFeedback>
   );
 };
 
@@ -67,11 +73,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 4,
+    margin: 8,
     justifyContent: 'center',
     alignItems: 'center',
   },
   temperatureContainer: {
-    padding: 4,
+    marginBottom: 4,
   },
   currentContainer: {
     flex: 1,
@@ -81,19 +88,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   icon: {
-    height: '75%',
-    marginEnd: 8,
+    height: '100%',
+    marginEnd: 12,
   },
   timestamp: {
-    marginTop: 12,
+    marginTop: 4,
     fontStyle: 'italic',
-  },
-  detailText: {
-    textAlign: 'center',
-    marginBottom: 12,
   },
   placeText: {
     padding: 2,
+    fontSize: 16,
     fontWeight: 'bold',
   },
 });

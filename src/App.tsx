@@ -7,7 +7,6 @@ import {
   ActivityIndicator,
   View,
   Linking,
-  TouchableWithoutFeedback,
 } from 'react-native';
 import {Text} from 'react-native-elements';
 import {CurrentWeather} from './components/CurrentWeather';
@@ -89,15 +88,11 @@ const App = () => {
         }>
         {data ? (
           <>
-            <TouchableWithoutFeedback
-              onLongPress={() => openWeather(weather.lat, weather.lon)}>
-              <View>
-                <CurrentWeather
-                  data={data.current}
-                  locationString={locationString}
-                />
-              </View>
-            </TouchableWithoutFeedback>
+            <CurrentWeather
+              data={data.current}
+              locationString={locationString}
+              onLongPress={() => openWeather(weather.lat, weather.lon)}
+            />
             {weatherAlerts?.alerts?.length ? (
               <WeatherAlerts data={weatherAlerts} />
             ) : null}
