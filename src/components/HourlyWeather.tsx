@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
   },
   buttonGroupContainer: {
     padding: 2,
-    borderRadius: 10,
+    borderRadius: 12,
     backgroundColor: null,
     borderEndWidth: 0,
     borderWidth: 0,
