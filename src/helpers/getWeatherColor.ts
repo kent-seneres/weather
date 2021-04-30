@@ -1,5 +1,6 @@
 /**
  * Get a color value corresponding to the weather condition id.
+ * See: https://openweathermap.org/weather-conditions#Weather-Condition-Codes-2
  * TODO: consolidate colors
  */
 const getWeatherColor = (weatherId: number | null): string => {

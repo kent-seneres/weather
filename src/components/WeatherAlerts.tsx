@@ -21,7 +21,10 @@ const trimTitle = (fullTitle: string): string => {
 
 const formatDescription = (description: string): string => {
   // trim out scattered newlines, but keep the double new lines separating paragraphs
-  return description.replace(/(\w)\n(\w)/g, '$1$2');
+  return description
+    .split('\n\n')
+    .map((s) => s.replace(/\n/g, ' '))
+    .join('\n\n');
 };
 
 const formatTime = (timestamp: string | number): string => {
@@ -62,17 +65,17 @@ export const WeatherAlerts: React.FC<WeatherAlertsProps> = ({data}) => {
         onRequestClose={() => setModalVisible(false)}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <ScrollView>
-              <Swiper loop={false}>
-                {data.alerts.map((alertGroup) => {
-                  return (
-                    <View key={alertGroup.title}>
-                      {renderAlertContent(alertGroup)}
-                    </View>
-                  );
-                })}
-              </Swiper>
-            </ScrollView>
+            <Swiper loop={false}>
+              {data.alerts.map((alertGroup) => {
+                return (
+                  <ScrollView
+                    style={styles.alertContent}
+                    key={alertGroup.title}>
+                    {renderAlertContent(alertGroup)}
+                  </ScrollView>
+                );
+              })}
+            </Swiper>
             <View style={styles.divider} />
             <Button
               title="Dismiss"
@@ -115,8 +118,7 @@ const styles = StyleSheet.create({
     marginStart: 6,
   },
   titleText: {
-    marginStart: 6,
-    marginEnd: 6,
+    marginHorizontal: 6,
     color: '#ff8c00',
   },
   centeredView: {
@@ -137,6 +139,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  alertContent: {
+    marginBottom: 52,
+  },
   descriptionContainer: {
     padding: 16,
     flex: 1,
@@ -150,18 +155,16 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   dismissButtonContainer: {
-    marginTop: 16,
-    marginBottom: 16,
+    marginVertical: 16,
     alignSelf: 'center',
   },
   dismissButton: {
-    paddingStart: 16,
-    paddingEnd: 16,
+    borderRadius: 12,
+    paddingHorizontal: 16,
   },
   divider: {
     height: 2,
-    marginStart: 16,
-    marginEnd: 16,
+    marginHorizontal: 16,
     backgroundColor: '#f3f0f6',
   },
 });

@@ -3,10 +3,12 @@ import {View, StyleSheet, Image, TouchableNativeFeedback} from 'react-native';
 import {Text} from 'react-native-elements';
 import getIcon from '../helpers/getIcon';
 import getDayString from '../helpers/getDayString';
+import Icon from 'react-native-vector-icons/Feather';
 
 export interface DailyWeatherLineProps {
   timestamp: number;
   iconId: string;
+  pop: number;
   minValue: string;
   maxValue: string;
   widthPercent: number;
@@ -19,6 +21,8 @@ const ICON_WIDTH_PERCENT = 0.1;
 const MAX_WIDTH = 1 - TIME_WIDTH_PERCENT - ICON_WIDTH_PERCENT;
 const MAX_LINE_WIDTH = MAX_WIDTH - 0.06;
 
+const PRECIP_COLOR = '#5fa0ea';
+
 /**
  * Single row of daily data that shows the day, condition icon,
  * min and max temperature, spaced according to the given offset and width.
@@ -26,6 +30,7 @@ const MAX_LINE_WIDTH = MAX_WIDTH - 0.06;
 export const DailyWeatherLine: React.FC<DailyWeatherLineProps> = ({
   timestamp,
   iconId,
+  pop,
   minValue,
   maxValue,
   widthPercent,
@@ -35,10 +40,22 @@ export const DailyWeatherLine: React.FC<DailyWeatherLineProps> = ({
   const offset = `${offsetPercent * MAX_WIDTH * 100}%`;
   const width = `${widthPercent * MAX_LINE_WIDTH * 100}%`;
 
+  const formatPrecipitationPercent = (p: number): string => {
+    return `${Math.round(p * 100)}%`;
+  };
+
   return (
     <TouchableNativeFeedback onPress={onPress}>
       <View style={styles.container}>
-        <Text style={styles.time}>{getDayString(timestamp).toUpperCase()}</Text>
+        <View style={styles.timeContainer}>
+          <Text style={styles.time}>
+            {getDayString(timestamp).toUpperCase()}
+          </Text>
+          <View style={styles.popContainer}>
+            <Icon name="droplet" size={10} color={PRECIP_COLOR} />
+            <Text style={styles.pop}>{formatPrecipitationPercent(pop)}</Text>
+          </View>
+        </View>
         <Image style={styles.icon} source={getIcon(iconId)} />
         <View style={styles.valueLine}>
           <View
@@ -69,8 +86,23 @@ const styles = StyleSheet.create({
     paddingStart: 16,
     paddingEnd: 16,
   },
-  time: {
+  timeContainer: {
     width: `${TIME_WIDTH_PERCENT * 100}%`,
+    flexDirection: 'column',
+  },
+  time: {
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  popContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  pop: {
+    fontSize: 11,
+    paddingStart: 2,
+    color: PRECIP_COLOR,
+    fontWeight: 'bold',
   },
   icon: {
     width: `${ICON_WIDTH_PERCENT * 100}%`,
@@ -95,5 +127,6 @@ const styles = StyleSheet.create({
   },
   value: {
     padding: 0,
+    fontWeight: 'bold',
   },
 });

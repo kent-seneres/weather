@@ -1,7 +1,7 @@
 import React from 'react';
 import {WeatherData, AlertsData} from '../core/types';
 import {getLocation, CurrentLocationData} from '../core/location';
-import fetchWeatherData from '../core/api';
+import {fetchWeatherData} from '../core/api';
 
 enum Actions {
   LOAD = 'LOAD',

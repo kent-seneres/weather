@@ -20,9 +20,11 @@ export interface HourlyWeatherData {
   weather: Weather[];
   rain?: Precipitation;
   snow?: Precipitation;
+  uvi: number;
+  pop: number;
 }
 
-export interface CurrentWeatherData extends HourlyWeatherData {
+export interface CurrentWeatherData extends Omit<HourlyWeatherData, 'pop'> {
   sunset: number;
   sunrise: number;
 }
@@ -39,6 +41,8 @@ export interface DailyWeatherData {
   weather: Weather[];
   rain?: number;
   snow?: number;
+  uvi: number;
+  pop: number;
 }
 
 export interface Weather {
@@ -80,4 +84,43 @@ export interface WeatherAlertGroup {
   effective_utc: string;
   expires_utc: string;
   alerts?: string[];
+}
+
+interface HereAddress {
+  label: string;
+  countryCode: string;
+  countryName: string;
+  state: string;
+  county: string;
+  city: string;
+  district: string;
+  street: string;
+  postalCode: string;
+  houseNumber: string;
+}
+
+interface HereReverseGeocodeItem {
+  resultType:
+    | 'place'
+    | 'locality'
+    | 'street'
+    | 'houseNumber'
+    | 'administrativeArea'
+    | 'addressBlock'
+    | 'intersection'
+    | 'postalCodePoint'
+    | 'chainQuery'
+    | 'categoryQuery';
+
+  id: string;
+  title: string;
+  address: HereAddress;
+  position: {
+    lat: string;
+    lng: string;
+  };
+}
+
+export interface HereReverseGeocode {
+  items: HereReverseGeocodeItem[];
 }

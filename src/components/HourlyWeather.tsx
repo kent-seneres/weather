@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, ScrollView} from 'react-native';
 import {ButtonGroup} from 'react-native-elements';
 import {HourlyWeatherData} from '../core/types';
 import getWeatherDescription from '../helpers/getWeatherDescription';
@@ -8,10 +8,58 @@ import {HourlyWeatherLine} from './HourlyWeatherLine';
 
 enum DataChoice {
   TEMPERATURE,
+  FEELS_LIKE,
+  PRECIPITATION_PROBABILITY,
   WIND_SPEED,
   CLOUDS,
   HUMIDITY,
+  UVI,
 }
+
+const getValue = (dataChoice: DataChoice, data: HourlyWeatherData) => {
+  let value: number;
+  switch (dataChoice) {
+    case DataChoice.TEMPERATURE:
+      value = data.temp;
+      break;
+    case DataChoice.FEELS_LIKE:
+      value = data.feels_like;
+      break;
+    case DataChoice.WIND_SPEED:
+      value = data.wind_speed;
+      break;
+    case DataChoice.CLOUDS:
+      value = data.clouds;
+      break;
+    case DataChoice.HUMIDITY:
+      value = data.humidity;
+      break;
+    case DataChoice.PRECIPITATION_PROBABILITY:
+      value = data.pop * 100;
+      break;
+    case DataChoice.UVI:
+      value = data.uvi;
+      break;
+  }
+
+  return Math.round(value);
+};
+
+const getUnits = (dataChoice: DataChoice) => {
+  switch (dataChoice) {
+    case DataChoice.TEMPERATURE:
+    case DataChoice.FEELS_LIKE:
+      return '°';
+    case DataChoice.WIND_SPEED:
+      return ' mph';
+    case DataChoice.CLOUDS:
+    case DataChoice.HUMIDITY:
+    case DataChoice.PRECIPITATION_PROBABILITY:
+      return ' %';
+    default:
+      return '';
+  }
+};
 
 export interface HourlyWeatherProps {
   data: HourlyWeatherData[];
@@ -34,46 +82,20 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
     DataChoice.TEMPERATURE,
   );
 
-  const getValue = (data: HourlyWeatherData) => {
-    let value: number;
-    switch (dataChoice) {
-      case DataChoice.TEMPERATURE:
-        value = data.temp;
-        break;
-      case DataChoice.WIND_SPEED:
-        value = data.wind_speed;
-        break;
-      case DataChoice.CLOUDS:
-        value = data.clouds;
-        break;
-      case DataChoice.HUMIDITY:
-        value = data.humidity;
-        break;
-    }
-
-    return Math.round(value);
-  };
-
-  const getUnits = () => {
-    switch (dataChoice) {
-      case DataChoice.TEMPERATURE:
-        return '°';
-      case DataChoice.WIND_SPEED:
-        return ' mph';
-      case DataChoice.CLOUDS:
-      case DataChoice.HUMIDITY:
-        return ' %';
-    }
-  };
-  const values = dataToDisplay.map((data) => Math.round(getValue(data)));
+  const values = dataToDisplay.map((data) => getValue(dataChoice, data));
   const min = Math.min(...values);
   const max = Math.max(...values);
 
   /**
    * Get the relative percentage of the value compared to the entire data set.
    */
-  const getValueRelativePercent = (value: number): number =>
-    (value - min) / (max - min);
+  const getValueRelativePercent = (value: number): number => {
+    if (max === min) {
+      return 1;
+    }
+
+    return (value - min) / (max - min);
+  };
 
   return (
     <View style={styles.container}>
@@ -95,7 +117,7 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
               ? null
               : currentDescription;
 
-          const value = getValue(data);
+          const value = getValue(dataChoice, data);
           return (
             <HourlyWeatherLine
               key={data.dt}
@@ -106,21 +128,37 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
               roundedBottom={index === array.length - 1}
               offsetPercent={getValueRelativePercent(value)}
               value={value}
-              unit={getUnits()}
+              unit={getUnits(dataChoice)}
               onPress={() => setShowFull((val) => !val)}
             />
           );
         },
       )}
-      <ButtonGroup
-        buttons={['Temp', 'Wind', 'Clouds', 'Humidity']}
-        buttonStyle={styles.buttonGroupButton}
-        textStyle={styles.buttonGroupText}
-        containerStyle={styles.buttonGroupContainer}
-        buttonContainerStyle={styles.buttonGroupContainer}
-        selectedIndex={dataChoice}
-        onPress={(index) => setDataChoice(index)}
-      />
+
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.buttonGroup}>
+        <ButtonGroup
+          buttons={[
+            `Temp (F${getUnits(DataChoice.TEMPERATURE)})`,
+            `Feels-Like (F${getUnits(DataChoice.FEELS_LIKE)})`,
+            `Precip Prob (${getUnits(
+              DataChoice.PRECIPITATION_PROBABILITY,
+            ).trim()})`,
+            `Wind (${getUnits(DataChoice.WIND_SPEED).trim()})`,
+            `Clouds (${getUnits(DataChoice.CLOUDS).trim()})`,
+            `Humidity (${getUnits(DataChoice.HUMIDITY).trim()})`,
+            'UV Index',
+          ]}
+          buttonStyle={styles.buttonGroupButton}
+          textStyle={styles.buttonGroupText}
+          containerStyle={styles.buttonGroupContainer}
+          buttonContainerStyle={styles.buttonGroupContainer}
+          selectedIndex={dataChoice}
+          onPress={(index) => setDataChoice(index)}
+        />
+      </ScrollView>
     </View>
   );
 };
@@ -132,17 +170,23 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
   },
   buttonGroupButton: {
-    borderRadius: 10,
+    borderRadius: 12,
+    paddingHorizontal: 10,
     backgroundColor: '#f3f0f6',
+    paddingTop: 2,
+    paddingBottom: 3,
   },
   buttonGroupText: {
     fontSize: 14,
   },
   buttonGroupContainer: {
     padding: 2,
-    borderRadius: 10,
+    borderRadius: 12,
     backgroundColor: null,
     borderEndWidth: 0,
     borderWidth: 0,
+  },
+  buttonGroup: {
+    padding: 4,
   },
 });

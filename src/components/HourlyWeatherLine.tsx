@@ -37,11 +37,10 @@ export const HourlyWeatherLine: React.FC<HourlyWeatherLineProps> = ({
   unit,
   onPress,
 }) => {
-  const colorBlockStyle = roundedTop
-    ? styles.roundedTop
-    : roundedBottom
-    ? styles.roundedBottom
-    : {};
+  const colorBlockStyle = {
+    ...(roundedTop ? styles.roundedTop : {}),
+    ...(roundedBottom ? styles.roundedBottom : {}),
+  };
 
   const width = MIN_WIDTH + offsetPercent * (MAX_WIDTH - MIN_WIDTH);
   const widthPercent = `${width * 100}%`;
@@ -89,6 +88,7 @@ const styles = StyleSheet.create({
   time: {
     width: `${TIME_WIDTH_PERCENT * 100}%`,
     textAlign: 'right',
+    fontWeight: 'bold',
   },
   valueLine: {
     flexDirection: 'row',
@@ -120,16 +120,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#d9d7dc',
   },
   value: {
-    marginTop: 1,
-    marginBottom: 1,
+    marginVertical: 1,
+    paddingVertical: 3,
     paddingStart: 8,
-    padding: 4,
-    paddingTop: 3,
-    paddingBottom: 3,
+    paddingEnd: 6,
     marginStart: 8,
     backgroundColor: '#f3f0f6',
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#d9d7dc',
+    fontWeight: 'bold',
   },
 });
