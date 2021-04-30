@@ -21,7 +21,7 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: macOS-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -62,13 +62,6 @@ jobs:
       - name: Build Android APK
         run: |
           cd android && chmod +x ./gradlew && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release --no-daemon
-
-      - name: Run e2e tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          avd-name: 'Pixel_2_API_29'
-          script: yarn test-e2e
 
       - name: Archive APK
         uses: actions/upload-artifact@v2
