@@ -11,8 +11,8 @@
     "test-e2e": "detox test -c android.emu.release"
   },
   "dependencies": {
-    "react": "^17.0.1",
-    "react-native": "^0.63.4",
+    "react": "^17.0.2",
+    "react-native": "^0.66.2",
     "react-native-config": "^1.2.1",
     "react-native-elements": "^2.0.4",
     "react-native-geolocation-service": "^5.0.0",
