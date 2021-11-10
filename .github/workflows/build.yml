@@ -61,7 +61,7 @@ jobs:
 
       - name: Build Android APK
         run: |
-          cd android && chmod +x ./gradlew && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release --no-daemon
+          cd android && chmod +x ./gradlew && ./gradlew assembleRelease --no-daemon
 
       - name: Archive APK
         uses: actions/upload-artifact@v2
