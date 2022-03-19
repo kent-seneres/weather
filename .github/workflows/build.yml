@@ -45,8 +45,8 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
 
-        - name: Install dependencies
-          run: yarn install
+      - name: Install dependencies
+        run: yarn install
 
       - name: Lint
         run: yarn lint
@@ -82,7 +82,7 @@ jobs:
         with:
           name: release-apk
           path: android/app/build/outputs/apk/release/app-release.apk
-          
+
   test:
     name: Run Tests
     needs: build
