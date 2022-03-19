@@ -9,13 +9,13 @@
       "device": {
         "avdName": "Pixel_2_API_29"
       }
-    },    
+    },
     "android.emu.release": {
-      "type": "android.emulator",
-      "build": "export ENVFILE=.env.production && cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release && cd ..",
+      "type": "android.attached",
+      "build": "export ENVFILE=.env && cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release && cd ..",
       "binaryPath": "android/app/build/outputs/apk/release/app-release.apk",
       "device": {
-        "avdName": "Pixel_2_API_29"
+        "adbName": "R58R746PP8J"
       }
     }
   }
