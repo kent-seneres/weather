@@ -101,6 +101,9 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
 
+      - name: Check APKs
+        run: ls -R android/app/build/outputs/apk/
+
       - name: Install dependencies
         run: yarn install
 
