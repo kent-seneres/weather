@@ -21,12 +21,18 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
+
+      # https://github.com/expo/expo-github-action/issues/20
+      - name: Increase file watcher limit
+        run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+
       - uses: actions/setup-node@master
 
+      # set up environment variables required for the build
       - name: Set environment variables
         run: |
           echo "OWM_APP_ID=${{ secrets.OWM_APP_ID }}" >> .env
@@ -39,8 +45,8 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Install dependencies
-        run: yarn install
+        - name: Install dependencies
+          run: yarn install
 
       - name: Lint
         run: yarn lint
@@ -49,22 +55,69 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('android/gradle/wrapper/gradle-wrapper.properties') }}
 
       - name: Cache Gradle Dependencies
         uses: actions/cache@v2
         with:
           path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('android/gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-caches-
 
-      - name: Build Android APK
+      # build release and test APKs
+      - name: Build Android APKs
         run: |
-          cd android && chmod +x ./gradlew && ./gradlew assembleRelease --no-daemon
+          cd android && chmod +x ./gradlew && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release --no-daemon
+
+      # cache the APKs to be used in the detox e2e test
+      - name: Cache APKs
+        uses: actions/cache@v2
+        with:
+          path: android/app/build/outputs/apk
+          key: output-apks-${{ hashFiles('package.json') }}
 
       - name: Archive APK
         uses: actions/upload-artifact@v2
         with:
           name: release-apk
           path: android/app/build/outputs/apk/release/app-release.apk
+          
+  test:
+    name: Run Tests
+    needs: build
+
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@master
+
+      # fetch the APKs from cache
+      - name: Cache APKs
+        id: apk_cache
+        uses: actions/cache@v2
+        with:
+          path: android/app/build/outputs/apk
+          key: output-apks-${{ hashFiles('package.json') }}
+
+      - name: Bail if APKs could not be found
+        if: steps.apk_cache.outputs.cache-hit != 'true'
+        run: exit 1
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: test_results
+          path: e2e/artifacts
+
+      - name: Run adb commands
+        run: adb devices
