@@ -70,18 +70,12 @@ jobs:
         run: |
           cd android && chmod +x ./gradlew && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release --no-daemon
 
-      # cache the APKs to be used in the detox e2e test
-      - name: Cache APKs
-        uses: actions/cache@v2
-        with:
-          path: android/app/build/outputs/apk
-          key: output-apks-${{ hashFiles('package.json') }}
-
+      # upload the APKs, to be used in the detox e2e test
       - name: Archive APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
-          name: release-apk
-          path: android/app/build/outputs/apk/release/app-release.apk
+          name: release-apks
+          path: android/app/build/outputs/apk/
 
   test:
     name: Run Tests
@@ -92,17 +86,14 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@master
 
-      # fetch the APKs from cache
-      - name: Cache APKs
-        id: apk_cache
-        uses: actions/cache@v2
-        with:
-          path: android/app/build/outputs/apk
-          key: output-apks-${{ hashFiles('package.json') }}
+      - name: Create APK directory
+        run: mkdir -p android/app/build/outputs/apk/
 
-      - name: Bail if APKs could not be found
-        if: steps.apk_cache.outputs.cache-hit != 'true'
-        run: exit 1
+      - name: Download APKs
+        uses: actions/download-artifact@v3
+        with:
+          name: release-apks
+          path: android/app/build/outputs/apk/
 
       - name: Cache node modules
         uses: actions/cache@v2
@@ -112,12 +103,6 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
-
-      - name: Upload test artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: test_results
-          path: e2e/artifacts
 
       - name: Run adb commands
         run: adb devices
