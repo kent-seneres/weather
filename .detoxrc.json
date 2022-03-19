@@ -15,7 +15,7 @@
       "build": "export ENVFILE=.env && cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release && cd ..",
       "binaryPath": "android/app/build/outputs/apk/release/app-release.apk",
       "device": {
-        "adbName": "192.168.29.189:5555"
+        "adbName": "192.168.29.226:5555"
       }
     }
   }
