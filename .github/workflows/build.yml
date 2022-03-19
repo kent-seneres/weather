@@ -121,3 +121,6 @@ jobs:
 
       - name: Run adb commands
         run: adb devices
+
+      - name: Run e2e test
+        run: yarn test-e2e
