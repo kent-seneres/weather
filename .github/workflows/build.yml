@@ -5,10 +5,10 @@ on:
   # but only for the main branch
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
   # Also trigger on release created events
   release:
@@ -25,8 +25,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      # https://github.com/expo/expo-github-action/issues/20
+      - name: Increase file watcher limit
+        run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+
       - uses: actions/setup-node@master
 
+      # set up environment variables required for the build
       - name: Set environment variables
         run: |
           echo "OWM_APP_ID=${{ secrets.OWM_APP_ID }}" >> .env
@@ -49,22 +55,60 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('android/gradle/wrapper/gradle-wrapper.properties') }}
 
       - name: Cache Gradle Dependencies
         uses: actions/cache@v2
         with:
           path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('android/gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-caches-
 
-      - name: Build Android APK
+      # build release and test APKs
+      - name: Build Android APKs
         run: |
-          cd android && chmod +x ./gradlew && ./gradlew assembleRelease --no-daemon
+          cd android && chmod +x ./gradlew && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release --no-daemon
 
+      # upload the APKs, to be used in the detox e2e test
       - name: Archive APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
-          name: release-apk
-          path: android/app/build/outputs/apk/release/app-release.apk
+          name: release-apks
+          path: android/app/build/outputs/apk/
+
+  test:
+    name: Run Tests
+    needs: build
+
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@master
+
+      - name: Create APK directory
+        run: mkdir -p android/app/build/outputs/apk/
+
+      - name: Download APKs
+        uses: actions/download-artifact@v3
+        with:
+          name: release-apks
+          path: android/app/build/outputs/apk/
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Check APKs
+        run: ls -R android/app/build/outputs/apk/
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run adb commands
+        run: adb devices
+
+      - name: Run e2e test
+        run: yarn test-e2e
