@@ -1,5 +1,5 @@
 import React from 'react';
-import {WeatherData, AlertsData} from '../core/types';
+import {WeatherData} from '../core/types';
 import {getLocation, CurrentLocationData} from '../core/location';
 import {fetchWeatherData} from '../core/api';
 
@@ -13,7 +13,6 @@ interface WeatherDataState {
   isLoading: boolean;
   location: CurrentLocationData | null;
   weather: WeatherData | null;
-  weatherAlerts: AlertsData | null;
   error: any | null;
 }
 
@@ -21,7 +20,6 @@ const initialState: WeatherDataState = {
   isLoading: false,
   location: null,
   weather: null,
-  weatherAlerts: null,
   error: null,
 };
 
@@ -42,7 +40,6 @@ const weatherReducer: React.Reducer<WeatherDataState, any> = (
         isLoading: false,
         location: action.payload.location,
         weather: action.payload.weather,
-        weatherAlerts: action.payload.weatherAlerts,
         error: null,
       };
     case Actions.FAIL:
@@ -79,7 +76,7 @@ const useWeather = () => {
           type: Actions.SUCCESS,
           payload: {
             location: location,
-            weather: data.weather,
+            weather: data,
             weatherAlerts: data.alerts,
           },
         });
@@ -98,7 +95,6 @@ const useWeather = () => {
   return {
     location: state.location,
     weather: state.weather,
-    weatherAlerts: state.weatherAlerts,
     error: state.error,
     loading: state.isLoading,
     refresh,

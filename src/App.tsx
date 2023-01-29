@@ -18,7 +18,7 @@ import {WeatherAlerts} from './components/WeatherAlerts';
 import {fetchGeoCode} from './core/api';
 
 const App = () => {
-  const {weather, weatherAlerts, error, loading, refresh} = useWeather();
+  const {weather, error, loading, refresh} = useWeather();
   const [locationString, setLocationString] = React.useState<string>();
 
   /**
@@ -44,7 +44,7 @@ const App = () => {
         weather.lon,
       );
 
-      if (!isCancelled) {
+      if (reverseGeocodeResponse && !isCancelled) {
         if (reverseGeocodeResponse.items.length > 0) {
           // just use first result
           const result = reverseGeocodeResponse.items[0];
@@ -91,11 +91,9 @@ const App = () => {
             <CurrentWeather
               data={data.current}
               locationString={locationString}
-              onLongPress={() => openWeather(weather.lat, weather.lon)}
+              onLongPress={() => openWeather(data.lat, data.lon)}
             />
-            {weatherAlerts?.alerts?.length ? (
-              <WeatherAlerts data={weatherAlerts} />
-            ) : null}
+            {data.alerts.length ? <WeatherAlerts data={data.alerts} /> : null}
             <HourlyWeather data={data.hourly} />
             <DailyWeather data={data.daily} hourlyData={data.hourly} />
           </>

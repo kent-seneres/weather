@@ -8,6 +8,7 @@ export interface WeatherData {
   current: CurrentWeatherData;
   hourly: HourlyWeatherData[];
   daily: DailyWeatherData[];
+  alerts: Alert[];
 }
 
 export interface HourlyWeatherData {
@@ -67,23 +68,13 @@ export interface DailyTemperature {
 
 export interface DailyFeelsLike extends Omit<DailyTemperature, 'min' | 'max'> {}
 
-/**
- * weatherbit.io Alerts API
- * See: https://www.weatherbit.io/api/swaggerui/weather-api-v2#!/Alerts/
- */
-export interface AlertsData {
-  lat: number;
-  lon: number;
-  alerts: WeatherAlertGroup[];
-}
-
-export interface WeatherAlertGroup {
-  title: string;
+export interface Alert {
+  sender_name: string;
+  event: string;
+  start: number;
+  end: number;
   description: string;
-  severity: string;
-  effective_utc: string;
-  expires_utc: string;
-  alerts?: string[];
+  tags: string[];
 }
 
 interface HereAddress {
