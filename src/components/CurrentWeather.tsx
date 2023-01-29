@@ -8,7 +8,7 @@ import {SHOW_DETAILS_DURATION_MS} from '../core/constants';
 
 export interface CurrentWeatherProps {
   data: CurrentWeatherData;
-  locationString: string;
+  locationString?: string;
   onLongPress: () => void;
 }
 

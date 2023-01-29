@@ -30,7 +30,6 @@ jobs:
       - name: Set environment variables
         run: |
           echo "OWM_APP_ID=${{ secrets.OWM_APP_ID }}" >> .env
-          echo "WEATHERBIT_API_KEY=${{ secrets.WEATHERBIT_API_KEY }}" >> .env
           echo "HERE_API_KEY=${{ secrets.HERE_API_KEY }}" >> .env
 
       - name: Cache node modules

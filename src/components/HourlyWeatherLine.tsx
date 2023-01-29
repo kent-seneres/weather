@@ -8,7 +8,7 @@ export interface HourlyWeatherLineProps {
   color: string;
   roundedTop: boolean;
   roundedBottom: boolean;
-  description: string;
+  description: string | null;
   offsetPercent: number;
   value: string | number;
   unit: string;

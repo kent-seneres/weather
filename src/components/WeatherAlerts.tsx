@@ -7,53 +7,73 @@ import {
   ScrollView,
 } from 'react-native';
 import {Text, Button} from 'react-native-elements';
-import {AlertsData, WeatherAlertGroup} from '../core/types';
 import Icon from 'react-native-vector-icons/Feather';
 import Swiper from 'react-native-swiper';
+import {Alert} from '../core/types';
 
 export interface WeatherAlertsProps {
-  data: AlertsData;
+  data: Alert[];
 }
-
-const trimTitle = (fullTitle: string): string => {
-  return fullTitle.substr(0, fullTitle.indexOf('issued')).trim();
-};
 
 const formatDescription = (description: string): string => {
   // trim out scattered newlines, but keep the double new lines separating paragraphs
   return description
     .split('\n\n')
     .map((s) => s.replace(/\n/g, ' '))
-    .join('\n\n');
+    .join('\n\n')
+    .replace(/\* /g, '\n\n');
 };
 
-const formatTime = (timestamp: string | number): string => {
-  return new Date(timestamp).toLocaleString();
+const formatTime = (timestamp: number): string => {
+  return new Date(timestamp * 1000).toLocaleString();
+};
+
+const partStyles = StyleSheet.create({
+  container: {
+    marginBottom: 8,
+  },
+  title: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  body: {
+    fontSize: 14,
+  },
+});
+
+const Part: React.FC<{title: string; body: string}> = (props) => {
+  return (
+    <View style={partStyles.container}>
+      <Text style={partStyles.title}>{props.title}</Text>
+      <Text style={partStyles.body}>{props.body}</Text>
+    </View>
+  );
 };
 
 export const WeatherAlerts: React.FC<WeatherAlertsProps> = ({data}) => {
-  const mainTitle = trimTitle(data.alerts[0].title);
-  const extras = data.alerts.length > 1 ? ` | +${data.alerts.length - 1}` : '';
-  const buttonTitle = `${mainTitle}${extras}`;
-
   const [modalVisible, setModalVisible] = React.useState<boolean>(false);
 
-  const renderAlertContent = (alert: WeatherAlertGroup) => {
+  if (data.length === 0) {
+    return null;
+  }
+
+  const mainTitle = data[0].event;
+  const extras = data.length > 1 ? ` | +${data.length - 1}` : '';
+  const buttonTitle = `${mainTitle}${extras}`;
+
+  const renderAlertContent = (alert: Alert) => {
     return (
-      <>
-        <Text style={styles.modalTitle}>{trimTitle(alert.title)}</Text>
+      <View>
+        <Text style={styles.modalTitle}>{alert.event}</Text>
         <View style={styles.descriptionContainer}>
-          <Text style={styles.timestamp}>
-            Effective: {formatTime(alert.effective_utc)}
-          </Text>
-          <Text style={styles.timestamp}>
-            Effective: {formatTime(alert.expires_utc)}
-          </Text>
-          <Text style={styles.description}>
-            {formatDescription(alert.description)}
-          </Text>
+          <Part title="Effective Until" body={formatTime(alert.end)} />
+          <Part title="Issued By" body={alert.sender_name} />
+          <Part
+            title="Description"
+            body={formatDescription(alert.description)}
+          />
         </View>
-      </>
+      </View>
     );
   };
 
@@ -66,11 +86,11 @@ export const WeatherAlerts: React.FC<WeatherAlertsProps> = ({data}) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Swiper loop={false}>
-              {data.alerts.map((alertGroup) => {
+              {data.map((alertGroup) => {
                 return (
                   <ScrollView
                     style={styles.alertContent}
-                    key={alertGroup.title}>
+                    key={alertGroup.event}>
                     {renderAlertContent(alertGroup)}
                   </ScrollView>
                 );
@@ -139,9 +159,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-  alertContent: {
-    marginBottom: 52,
-  },
+  alertContent: {},
   descriptionContainer: {
     padding: 16,
     flex: 1,
