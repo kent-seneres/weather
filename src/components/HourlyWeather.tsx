@@ -14,6 +14,7 @@ enum DataChoice {
   CLOUDS,
   HUMIDITY,
   UVI,
+  PRECIPITATION_AMOUNT,
 }
 
 const getValue = (dataChoice: DataChoice, data: HourlyWeatherData) => {
@@ -40,6 +41,10 @@ const getValue = (dataChoice: DataChoice, data: HourlyWeatherData) => {
     case DataChoice.UVI:
       value = data.uvi;
       break;
+    case DataChoice.PRECIPITATION_AMOUNT:
+      const mm = data.rain?.['1h'] ?? data.snow?.['1h'] ?? 0;
+      value = mm / 25.4;
+      return Math.round(value * 100) / 100;
   }
 
   return Math.round(value);
@@ -56,6 +61,8 @@ const getUnits = (dataChoice: DataChoice) => {
     case DataChoice.HUMIDITY:
     case DataChoice.PRECIPITATION_PROBABILITY:
       return ' %';
+    case DataChoice.PRECIPITATION_AMOUNT:
+      return ' in';
     default:
       return '';
   }
@@ -150,6 +157,9 @@ export const HourlyWeather: React.FC<HourlyWeatherProps> = ({
             `Clouds (${getUnits(DataChoice.CLOUDS).trim()})`,
             `Humidity (${getUnits(DataChoice.HUMIDITY).trim()})`,
             'UV Index',
+            `Precip Amount (${getUnits(
+              DataChoice.PRECIPITATION_AMOUNT,
+            ).trim()})`,
           ]}
           buttonStyle={styles.buttonGroupButton}
           textStyle={styles.buttonGroupText}
