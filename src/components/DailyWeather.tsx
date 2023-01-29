@@ -8,7 +8,7 @@ import getTimeString from '../helpers/getTimeString';
 
 export interface DailyWeatherProps {
   data: DailyWeatherData[];
-  hourlyData?: HourlyWeatherData[];
+  hourlyData: HourlyWeatherData[];
 }
 
 /**

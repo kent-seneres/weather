@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
   buttonGroupContainer: {
     padding: 2,
     borderRadius: 12,
-    backgroundColor: null,
+    backgroundColor: 'transparent',
     borderEndWidth: 0,
     borderWidth: 0,
   },

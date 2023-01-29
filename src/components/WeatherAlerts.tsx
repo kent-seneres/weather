@@ -28,16 +28,31 @@ const formatTime = (timestamp: number): string => {
   return new Date(timestamp * 1000).toLocaleString();
 };
 
+const partStyles = StyleSheet.create({
+  container: {
+    marginBottom: 8,
+  },
+  title: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  body: {
+    fontSize: 14,
+  },
+});
+
 const Part: React.FC<{title: string; body: string}> = (props) => {
   return (
-    <View style={{marginBottom: 8}}>
-      <Text style={{fontWeight: 'bold', fontSize: 16}}>{props.title}</Text>
-      <Text style={{fontSize: 14}}>{props.body}</Text>
+    <View style={partStyles.container}>
+      <Text style={partStyles.title}>{props.title}</Text>
+      <Text style={partStyles.body}>{props.body}</Text>
     </View>
   );
 };
 
 export const WeatherAlerts: React.FC<WeatherAlertsProps> = ({data}) => {
+  const [modalVisible, setModalVisible] = React.useState<boolean>(false);
+
   if (data.length === 0) {
     return null;
   }
@@ -45,8 +60,6 @@ export const WeatherAlerts: React.FC<WeatherAlertsProps> = ({data}) => {
   const mainTitle = data[0].event;
   const extras = data.length > 1 ? ` | +${data.length - 1}` : '';
   const buttonTitle = `${mainTitle}${extras}`;
-
-  const [modalVisible, setModalVisible] = React.useState<boolean>(false);
 
   const renderAlertContent = (alert: Alert) => {
     return (
