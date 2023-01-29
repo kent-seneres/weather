@@ -82,7 +82,7 @@ const useWeather = () => {
         });
       } catch (error) {
         console.log(error);
-        dispatch({type: Actions.FAIL, payload: error});
+        dispatch({type: Actions.FAIL, payload: error.message});
       }
     };
 

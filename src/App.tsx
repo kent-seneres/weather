@@ -93,7 +93,7 @@ const App = () => {
               locationString={locationString}
               onLongPress={() => openWeather(data.lat, data.lon)}
             />
-            {data.alerts.length ? <WeatherAlerts data={data.alerts} /> : null}
+            {data.alerts?.length ? <WeatherAlerts data={data.alerts} /> : null}
             <HourlyWeather data={data.hourly} />
             <DailyWeather data={data.daily} hourlyData={data.hourly} />
           </>

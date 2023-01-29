@@ -8,7 +8,7 @@ export interface WeatherData {
   current: CurrentWeatherData;
   hourly: HourlyWeatherData[];
   daily: DailyWeatherData[];
-  alerts: Alert[];
+  alerts?: Alert[];
 }
 
 export interface HourlyWeatherData {
