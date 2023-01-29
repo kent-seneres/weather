@@ -5,10 +5,10 @@ on:
   # but only for the main branch
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
   # Also trigger on release created events
   release:
@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@master
 
       - name: Set environment variables
@@ -33,7 +33,7 @@ jobs:
           echo "HERE_API_KEY=${{ secrets.HERE_API_KEY }}" >> .env
 
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
@@ -45,13 +45,13 @@ jobs:
         run: yarn lint
 
       - name: Cache Gradle Wrapper
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
 
       - name: Cache Gradle Dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
@@ -63,7 +63,7 @@ jobs:
           cd android && chmod +x ./gradlew && ./gradlew assembleRelease --no-daemon
 
       - name: Archive APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: release-apk
           path: android/app/build/outputs/apk/release/app-release.apk
