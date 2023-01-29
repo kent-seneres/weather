@@ -28,6 +28,15 @@ const formatTime = (timestamp: number): string => {
   return new Date(timestamp * 1000).toLocaleString();
 };
 
+const Part: React.FC<{title: string; body: string}> = (props) => {
+  return (
+    <View style={{marginBottom: 8}}>
+      <Text style={{fontWeight: 'bold', fontSize: 16}}>{props.title}</Text>
+      <Text style={{fontSize: 14}}>{props.body}</Text>
+    </View>
+  );
+};
+
 export const WeatherAlerts: React.FC<WeatherAlertsProps> = ({data}) => {
   if (data.length === 0) {
     return null;
@@ -41,20 +50,17 @@ export const WeatherAlerts: React.FC<WeatherAlertsProps> = ({data}) => {
 
   const renderAlertContent = (alert: Alert) => {
     return (
-      <>
+      <View>
         <Text style={styles.modalTitle}>{alert.event}</Text>
         <View style={styles.descriptionContainer}>
-          <Text style={styles.timestamp}>
-            Effective: {formatTime(alert.start)}
-          </Text>
-          <Text style={styles.timestamp}>
-            Effective: {formatTime(alert.end)}
-          </Text>
-          <Text style={styles.description}>
-            {formatDescription(alert.description)}
-          </Text>
+          <Part title="Effective Until" body={formatTime(alert.end)} />
+          <Part title="Issued By" body={alert.sender_name} />
+          <Part
+            title="Description"
+            body={formatDescription(alert.description)}
+          />
         </View>
-      </>
+      </View>
     );
   };
 
@@ -140,9 +146,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-  alertContent: {
-    marginBottom: 52,
-  },
+  alertContent: {},
   descriptionContainer: {
     padding: 16,
     flex: 1,
