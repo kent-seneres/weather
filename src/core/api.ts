@@ -8,7 +8,7 @@ import {USE_MOCK_WEATHER_DATA} from './constants';
  * See: https://openweathermap.org/api/one-call-api
  */
 const buildRequestUrl = (lat: number, lon: number): string => {
-  const URL = 'https://api.openweathermap.org/data/2.5/onecall';
+  const URL = 'https://api.openweathermap.org/data/3.0/onecall';
   const units = 'imperial';
   const exclude = 'minutely';
   return `${URL}?lat=${lat}&lon=${lon}&units=${units}&exclude=${exclude}&appid=${Config.OWM_APP_ID}`;
